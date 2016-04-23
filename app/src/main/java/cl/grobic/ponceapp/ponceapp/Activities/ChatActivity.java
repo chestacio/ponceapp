@@ -32,17 +32,18 @@ public class ChatActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.chat);
+        conexion = new Conexion();
+        conexion.conectar("chat message", handleIncomingMessages);
+
 
         editTextIngresarMensaje = (EditText) findViewById(R.id.editTextIngresarMensaje);
         botonEnviarMensaje = (Button) findViewById(R.id.botonEnviarMensaje);
-        listViewMensajes =(ListView) findViewById(R.id.listViewMensajesChat);
-        listaMensajes = new ArrayList<MensajeChatModel>();
+        listViewMensajes = (ListView) findViewById(R.id.listViewMensajesChat);
 
+        listaMensajes = new ArrayList<MensajeChatModel>();
         adapter = new MessageAdapter(this, listaMensajes);
         listViewMensajes.setAdapter(adapter);
-
-        conexion = new Conexion();
 
         botonEnviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,5 +98,4 @@ public class ChatActivity extends Activity {
             e.printStackTrace();
         }
     }
-
 }
