@@ -91,7 +91,7 @@ Body:
         "nickname": "chamakito",
         "email": "xx_poncioh_xx@hotmail.com",
         "password": "1234",
-        "ruta_foto": "rikolino.png"
+        "avatar": "rikolino.png"
     }
     
 Respuesta:
