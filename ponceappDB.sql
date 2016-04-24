@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-04-2016 a las 07:15:04
+-- Tiempo de generación: 24-04-2016 a las 09:11:31
 -- Versión del servidor: 5.7.9
 -- Versión de PHP: 5.6.16
 
@@ -23,37 +23,45 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `amigos`
+-- Estructura de tabla para la tabla `friends`
 --
 
-DROP TABLE IF EXISTS `amigos`;
-CREATE TABLE IF NOT EXISTS `amigos` (
+DROP TABLE IF EXISTS `friends`;
+CREATE TABLE IF NOT EXISTS `friends` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user1` int(11) NOT NULL,
   `user2` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user1` (`user1`),
   KEY `user2` (`user2`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `friends`
+--
+
+INSERT INTO `friends` (`id`, `user1`, `user2`) VALUES
+(1, 1, 2),
+(2, 1, 3);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `estados`
+-- Estructura de tabla para la tabla `states`
 --
 
-DROP TABLE IF EXISTS `estados`;
-CREATE TABLE IF NOT EXISTS `estados` (
+DROP TABLE IF EXISTS `states`;
+CREATE TABLE IF NOT EXISTS `states` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `estado` varchar(10) NOT NULL,
+  `state` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `estados`
+-- Volcado de datos para la tabla `states`
 --
 
-INSERT INTO `estados` (`id`, `estado`) VALUES
+INSERT INTO `states` (`id`, `state`) VALUES
 (1, 'offline'),
 (2, 'online'),
 (3, 'busy'),
@@ -71,41 +79,42 @@ CREATE TABLE IF NOT EXISTS `users` (
   `nickname` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `ruta_foto` varchar(200) DEFAULT NULL,
+  `avatar` varchar(200) DEFAULT NULL,
   `subnick` varchar(200) DEFAULT NULL,
-  `estilo` varchar(100) DEFAULT NULL,
-  `estado` int(11) NOT NULL DEFAULT '1',
+  `nickname_style` varchar(100) DEFAULT NULL,
+  `msg_style` varchar(100) DEFAULT '{bold: false, italic: false, color: ''#000000''}',
+  `state` int(11) NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
-  KEY `estado` (`estado`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  KEY `estado` (`state`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `nickname`, `email`, `password`, `ruta_foto`, `subnick`, `estilo`, `estado`, `created_at`) VALUES
-(1, 'chestacio', 'carlos.chesta@caquita.cl', '1234', NULL, NULL, NULL, 1, '2016-04-24 07:00:52'),
-(2, 'eyesan', 'eyesan@eye.cl', 'fuicalover123', NULL, NULL, NULL, 1, '2016-04-24 07:00:52'),
-(3, 'indomicu', 'indo@indo.cl', 'me_gusta_la_celeste', 'celeste_en_pelota.png', 'CLST <3', '{bold: false, italic: false, color: ''#223344''}', 1, '2016-04-24 07:00:52');
+INSERT INTO `users` (`id`, `nickname`, `email`, `password`, `avatar`, `subnick`, `nickname_style`, `msg_style`, `state`, `created_at`) VALUES
+(1, 'basuritaxx', 'escoria_humana@ad.cl', '1234', NULL, NULL, NULL, '{bold: false, italic: false, color: ''#000000''}', 4, '2016-04-24 07:00:52'),
+(2, 'eyesan', 'eyesan@eye.cl', 'fuicalover123', NULL, NULL, NULL, '{bold: true, italic: false, color: ''#000000''}', 1, '2016-04-24 07:00:52'),
+(3, 'indomicu', 'indo@indo.cl', 'me_gusta_la_celeste', 'celeste_en_pelota.png', 'CLST <3', NULL, '{bold: false, italic: false, color: ''#223344''}', 1, '2016-04-24 07:00:52');
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `amigos`
+-- Filtros para la tabla `friends`
 --
-ALTER TABLE `amigos`
-  ADD CONSTRAINT `amigos_ibfk_1` FOREIGN KEY (`user1`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `amigos_ibfk_2` FOREIGN KEY (`user2`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE `friends`
+  ADD CONSTRAINT `friends_ibfk_1` FOREIGN KEY (`user1`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `friends_ibfk_2` FOREIGN KEY (`user2`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `estados` (`id`);
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`state`) REFERENCES `states` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

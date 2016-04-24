@@ -11,13 +11,24 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
+      #active_users { list-style-type: none; }
     </style>
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   </head>
 
   <body>
-    <ul id="messages"></ul>
+    <div>
+      <div style="width: 80%; float: left;">
+        <h3>Mensajes</h3>
+        <ul id="messages" style="min-width: 80%;"></ul>
+      </div>
+      <div style="float: left; width: 20%;">
+        <h3>Usuarios conectados</h3>
+        <ul id="active_users">
+        </ul>
+      </div>
+    </div>
     <form action="">
       <input id="n" autocomplete="off" placeholder="Username"/>
       <input id="m" autocomplete="off" placeholder="Enter your message here..."/>
@@ -32,12 +43,20 @@
           username: $('#n').val()
         };
         socket.emit('chat message', data);
+        socket.emit('new user', $('#n').val());
         $('#m').val('');
         return false;
       });
       socket.on('chat message', function(msg){
-        console.log(msg);
         $('#messages').append($('<li>').text(msg.username + ': ' + msg.msg));
+      });
+
+      socket.on('active_users', function(data){
+        console.log(data);
+        $('#active_users').empty();
+        for (var i = data.length - 1; i >= 0; i--) {
+          $('#active_users').append($('<li>').text(data[i]));
+        };
       });
     </script>
 </html>
