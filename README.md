@@ -10,13 +10,13 @@ Es la *nueva* forma para chatear!
 
 ## Instalación Base de Datos y Server
 
-Instalar ```MySQL``` mediante WAMP, LAMP, MAMP, XAMPP o aparte. Luego, ejecutar el script ```ponceappDB.sql``` para crear las tablas y registros iniciales.
+Instalar ```MySQL``` mediante WAMP, LAMP, MAMP, XAMPP o aparte. Luego, crear una base de datos llamada ```ponceapp``` y ejecutar el script ```ponceappDB.sql``` para crear las tablas y registros iniciales.
 
 Después es necesario instalar ```Node.js```, ubicarse dentro de la carpeta ```Server``` e instalar las dependecias con el comando:
 ```sh
 $ npm install
 ```
-Luego correr el server con:
+Cambiar los parámetros (como el usuario y contraseña) de la conexión a la base de datos en el archivo ```Server/connection.js```. Finalmente correr el server con:
 ```sh
 $ npm .\app.js
 ```
@@ -43,7 +43,7 @@ Para probar que el Server funciona basta con abrir la dirección ```http://local
 
 ## Ejemplos de Request y Response
 
-### GET /user
+### GET ```/user```
 
 Ejemplo: ```http://dominio/user/```
 
@@ -81,7 +81,7 @@ Respuesta:
             "state": "offline"
         }
     ]
-### POST /user
+### POST ```/user```
 
 Ejemplo: ```http://dominio/user/```
 
@@ -101,7 +101,7 @@ Respuesta:
       "message": "Usuario ingresado con éxito"
     }
 
-### GET /user/[id]
+### GET ```/user/[id]```
 Ejemplo: ```http://dominio/user/1/```
 
 Respuesta:
@@ -119,7 +119,7 @@ Respuesta:
       }
     ]
 
-### GET /user/[id]/friends
+### GET ```/user/[id]/friends```
 Ejemplo: ```http://dominio/user/1/friends/```
 
 Respuesta:
@@ -143,7 +143,7 @@ Respuesta:
       }
     ]
     
-### PUT /user/[id]/nickname
+### PUT ```/user/[id]/nickname```
 Ejemplo: ```http://dominio/user/1/nickname/```
 
 Body:
@@ -158,7 +158,7 @@ Respuesta:
       "status": 0,
       "message": "Usuario modificado con éxito"
     }
-### PUT /user/[id]/email
+### PUT ```/user/[id]/email```
 Ejemplo: ```http://dominio/user/1/email/```
 
 Body:
@@ -174,7 +174,7 @@ Respuesta:
       "message": "Usuario modificado con éxito"
     }
     
-### PUT /user/[id]/password
+### PUT ```/user/[id]/password```
 Ejemplo: ```http://dominio/user/1/password/```
 
 Body:
@@ -190,7 +190,7 @@ Respuesta:
       "message": "Usuario modificado con éxito"
     }
     
-### PUT /user/[id]/image
+### PUT ```/user/[id]/image```
 Ejemplo: ```http://dominio/user/1/image/```
 
 Body:
@@ -206,7 +206,7 @@ Respuesta:
       "message": "Usuario modificado con éxito"
     }
     
-### PUT /user/[id]/subnick
+### PUT ```/user/[id]/subnick```
 Ejemplo: ```http://dominio/user/1/subnick/```
 
 Body:
@@ -222,7 +222,7 @@ Respuesta:
       "message": "Usuario modificado con éxito"
     }
     
-### PUT /user/[id]/nickname_style
+### PUT ```/user/[id]/nickname_style```
 Ejemplo: ```http://dominio/user/1/nickname_style/```
 
 Body:
@@ -238,7 +238,7 @@ Respuesta:
       "message": "Usuario modificado con éxito"
     }
     
-### PUT /user/[id]/msg_style
+### PUT ```/user/[id]/msg_style```
 Ejemplo: ```http://dominio/user/1/msg_style/```
 
 Body:
@@ -255,7 +255,7 @@ Respuesta:
       "message": "Usuario modificado con éxito"
     }
     
-### PUT /user/[id]/state
+### PUT ```/user/[id]/state```
 Ejemplo: ```http://dominio/user/1/state/```
 
 Body:
