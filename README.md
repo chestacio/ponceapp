@@ -45,7 +45,7 @@ Para probar que el Server funciona basta con abrir la dirección ```http://local
 
 ### GET /user
 
-Ejemplo: http://dominio/user/
+Ejemplo: ```http://dominio/user/```
 
 Respuesta:
 
@@ -83,7 +83,7 @@ Respuesta:
     ]
 ### POST /user
 
-Ejemplo: http://dominio/user/
+Ejemplo: ```http://dominio/user/```
 
 Body:
 
@@ -102,7 +102,7 @@ Respuesta:
     }
 
 ### GET /user/[id]
-Ejemplo: http://dominio/user/1/
+Ejemplo: ```http://dominio/user/1/```
 
 Respuesta:
 
@@ -120,7 +120,7 @@ Respuesta:
     ]
 
 ### GET /user/[id]/friends
-Ejemplo: http://dominio/user/1/friends/
+Ejemplo: ```http://dominio/user/1/friends/```
 
 Respuesta:
 
@@ -144,7 +144,7 @@ Respuesta:
     ]
     
 ### PUT /user/[id]/nickname
-Ejemplo: http://dominio/user/1/nickname/
+Ejemplo: ```http://dominio/user/1/nickname/```
 
 Body:
 
@@ -159,7 +159,7 @@ Respuesta:
       "message": "Usuario modificado con éxito"
     }
 ### PUT /user/[id]/email
-Ejemplo: http://dominio/user/1/email/
+Ejemplo: ```http://dominio/user/1/email/```
 
 Body:
 
@@ -175,7 +175,7 @@ Respuesta:
     }
     
 ### PUT /user/[id]/password
-Ejemplo: http://dominio/user/1/password/
+Ejemplo: ```http://dominio/user/1/password/```
 
 Body:
 
@@ -191,7 +191,7 @@ Respuesta:
     }
     
 ### PUT /user/[id]/image
-Ejemplo: http://dominio/user/1/image/
+Ejemplo: ```http://dominio/user/1/image/```
 
 Body:
 
@@ -207,7 +207,7 @@ Respuesta:
     }
     
 ### PUT /user/[id]/subnick
-Ejemplo: http://dominio/user/1/subnick/
+Ejemplo: ```http://dominio/user/1/subnick/```
 
 Body:
 
@@ -223,7 +223,7 @@ Respuesta:
     }
     
 ### PUT /user/[id]/nickname_style
-Ejemplo: http://dominio/user/1/nickname_style/
+Ejemplo: ```http://dominio/user/1/nickname_style/```
 
 Body:
 
@@ -239,7 +239,7 @@ Respuesta:
     }
     
 ### PUT /user/[id]/msg_style
-Ejemplo: http://dominio/user/1/msg_style/
+Ejemplo: ```http://dominio/user/1/msg_style/```
 
 Body:
 
@@ -256,7 +256,7 @@ Respuesta:
     }
     
 ### PUT /user/[id]/state
-Ejemplo: http://dominio/user/1/state/
+Ejemplo: ```http://dominio/user/1/state/```
 
 Body:
 
