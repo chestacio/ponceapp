@@ -27,37 +27,21 @@ Para probar que el Server funciona basta con abrir la dirección ```http://local
 
 | Endpoint              | Tipo   | Descripción                                        |
 | -----------           | ------ | -----------                                        |
-| /user/                | GET    | Obtiene todos los usuarios                         |
-| /user/                | POST   | Crea un nuevo usuario                              |
-| /user/:id             | GET    | Información del usuario ```:id```                  |
-| /user/:id/friends     | GET    | Obtiene los amigos del usuario ```:id```           |
-| /user/:id/nickname    | PUT    | Modifica el nickname del usuario ```:id```         |
-| /user/:id/email       | PUT    | Modifica el email del usuario ```:id```            |
-| /user/:id/password    | PUT    | Modifica la contraseña del usuario ```:id```       |
-| /user/:id/image       | PUT    | Modifica la ruta de la imagen del usuario ```:id```|
-| /user/:id/subnick		 		| PUT    | Modifica el subnick del usuario ```:id```          |
-| /user/:id/nickname_style		| PUT    | Modifica el estilo del nickname del usuario ```:id```          |
-| /user/:id/msg_style     | PUT    | Modifica el estilo de los mensajes del usuario ```:id```          |
-| /user/:id/state       | PUT    | Modifica el estado del usuario ```:id```           |
+| [/user/](#get-user)                | GET    | Obtiene todos los usuarios                         |
+| [/user/](#post-user)                | POST   | Crea un nuevo usuario                              |
+| [/user/:id/](#get-userid)             | GET    | Información del usuario ```:id```                  |
+| [/user/:id/friends/](#put-useridfriends)     | GET    | Obtiene los amigos del usuario ```:id```           |
+| [/user/:id/nickname/](#put-useridnickname)    | PUT    | Modifica el nickname del usuario ```:id```         |
+| [/user/:id/email/](#put-useridemail)       | PUT    | Modifica el email del usuario ```:id```            |
+| [/user/:id/password/](#put-useridpassword)    | PUT    | Modifica la contraseña del usuario ```:id```       |
+| [/user/:id/image/](#put-useridimage)       | PUT    | Modifica la ruta de la imagen del usuario ```:id```|
+| [/user/:id/subnick/](#put-useridsubnick)		 		| PUT    | Modifica el subnick del usuario ```:id```          |
+| [/user/:id/nickname_style/](#put-useridnickname_style)		| PUT    | Modifica el estilo del nickname del usuario ```:id```          |
+| [/user/:id/msg_style/](#put-useridmsg_style)     | PUT    | Modifica el estilo de los mensajes del usuario ```:id```          |
+| [/user/:id/state/](#put-useridstate)       | PUT    | Modifica el estado del usuario ```:id```           |
 
 
 ## Ejemplos de Request y Response
-
-### API Resources
-
-  - [GET /user/](#get-user)
-  - [POST /user/](#post-user)
-  - [GET /user/:id/](#get-userid)
-  - [GET /user/:id/friends](#put-useridfriends)
-  - [PUT /user/:id/nickname](#put-useridnickname)
-  - [PUT /user/:id/email](#put-useridemail)
-  - [PUT /user/:id/password](#put-useridpassword)
-  - [PUT /user/:id/image](#put-useridimage)
-  - [PUT /user/:id/subnick](#put-useridsubnick)
-  - [PUT /user/:id/nickname_style](#put-useridnickname_style)
-  - [PUT /user/:id/msg_style](#put-useridmsg_style)
-  - [PUT /user/:id/state](#put-useridstate)
- 
 
 ### GET /user
 
