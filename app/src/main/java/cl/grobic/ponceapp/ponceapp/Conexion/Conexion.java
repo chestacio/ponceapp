@@ -6,8 +6,6 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import java.net.URISyntaxException;
 
-import cl.grobic.ponceapp.ponceapp.Activities.ChatActivity;
-
 /**
  * Created by Carlos on 23-04-2016.
  */

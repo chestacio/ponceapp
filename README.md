@@ -18,7 +18,7 @@ $ npm install
 ```
 Cambiar los parámetros (como el usuario y contraseña) de la conexión a la base de datos en el archivo ```Server/connection.js```. Finalmente correr el server con:
 ```sh
-$ npm .\app.js
+$ npm app.js
 ```
 
 Para probar que el Server funciona basta con abrir la dirección ```http://localhost:3000/```.
@@ -299,4 +299,4 @@ Respuesta:
 
 
 ## Configurar IP
-Dentro de la activity ```Conexion``` de la aplicación está la IP del server. Cambiar por la suya.
+Dentro del paquete ```Conexion``` de la aplicación están la IPs del server. Cambiar por la suya.

@@ -60,8 +60,6 @@ function User() {
 			query += 'FROM friends AS a, users AS u, states AS e ';
 			query += 'WHERE ((a.user1=? AND a.user2=u.id) OR (a.user2=? AND a.user1=u.id)) AND u.state=e.id';
 			con.query(query, [id, id], function(err, response) {
-				console.log(err);
-				console.log(response);
 				con.release();
 				res.send(response);
 			});
