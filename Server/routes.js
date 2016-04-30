@@ -3,8 +3,10 @@ var user = require('./models/user');
 module.exports = {
 	configure: function(app) {
 		app.get('/', function(req, res) {
-			console.log(__dirname);
 			res.sendFile(__dirname + '/index.html');
+		});
+		app.post('/login', function(req, res) {
+			user.login(req.body, res);
 		});
 		app.get('/user/', function(req, res) {
 			user.getAll(res);

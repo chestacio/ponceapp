@@ -1,6 +1,22 @@
 var connection = require('../connection');
 
 function User() {
+
+	this.login = function(user, res) {
+		connection.acquire(function(err, con) {
+			query = 'SELECT u.id, u.nickname, u.subnick, u.email, u.nickname_style, u.msg_style, u.avatar, e.state ';
+			query += 'FROM users as u, states as e WHERE u.state=e.id AND u.email=? AND u.password=?';
+			con.query(query, [user.email, user.password], function(err, response) {
+				con.release();
+				if (response.length > 0)
+					res.send(response[0]);
+				else
+					res.send({ status: 1, message: 'Email y/o contraseña inválida'});
+
+			});
+		});
+	};
+
 	this.get = function(id, res) {
 		connection.acquire(function(err, con) {
 			query = 'SELECT u.id, u.nickname, u.subnick, u.email, u.nickname_style, u.msg_style, u.avatar, e.state ';

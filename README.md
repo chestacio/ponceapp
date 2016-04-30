@@ -27,6 +27,7 @@ Para probar que el Server funciona basta con abrir la dirección ```http://local
 
 | Endpoint              | Tipo   | Descripción                                        |
 | -----------           | ------ | -----------                                        |
+| [```/login/```](#post-login)                | POST    | Iniciar sesión                         |
 | [```/user/```](#get-user)                | GET    | Obtiene todos los usuarios                         |
 | [```/user/```](#post-user)                | POST   | Crea un nuevo usuario                              |
 | [```/user/:id/```](#get-userid)             | GET    | Información del usuario ```:id```                  |
@@ -42,6 +43,29 @@ Para probar que el Server funciona basta con abrir la dirección ```http://local
 
 
 ## Ejemplos de Request y Response
+
+### POST ```/login```
+
+Ejemplo: ```http://dominio/login/```
+
+Body:
+    {
+        "email": "indo@indo.com",
+        "password": "clst",
+    }
+    
+Respuesta:
+
+    {
+      "id": 3,
+      "nickname": "indomicu",
+      "subnick": "holi",
+      "email": "indo@indo.cl",
+      "nickname_style": null,
+      "msg_style": "{bold: false, italic: false, color: '#223344'}",
+      "avatar": "foto.png",
+      "state": "offline"
+    }
 
 ### GET ```/user```
 
