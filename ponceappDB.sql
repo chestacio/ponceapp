@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `nickname`, `email`, `password`, `avatar`, `subnick`, `nickname_style`, `msg_style`, `state`, `created_at`) VALUES
 (1, 'basuritaxx', 'escoria_humana@ad.cl', '1234', NULL, NULL, NULL, '{bold: false, italic: false, color: ''#000000''}', 4, '2016-04-24 07:00:52'),
 (2, 'eyesan', 'eyesan@eye.cl', 'fuicalover123', NULL, NULL, NULL, '{bold: true, italic: false, color: ''#000000''}', 1, '2016-04-24 07:00:52'),
-(3, 'indomicu', 'indo@indo.cl', 'clst', 'foto.png', 'CLST <3', NULL, '{bold: false, italic: false, color: ''#223344''}', 1, '2016-04-24 07:00:52');
+(3, 'indomicu', 'indo@indo.cl', 'clst', 'duck.png', 'CLST <3', NULL, '{bold: false, italic: false, color: ''#223344''}', 1, '2016-04-24 07:00:52');
 
 --
 -- Restricciones para tablas volcadas
