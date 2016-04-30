@@ -3,6 +3,7 @@ package cl.grobic.ponceapp.ponceapp.Activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,11 +13,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import cl.grobic.ponceapp.ponceapp.Adapters.ContactosAdapter;
+import cl.grobic.ponceapp.ponceapp.Conexion.SendRequest;
+import cl.grobic.ponceapp.ponceapp.Modelos.MensajeChatModel;
+import cl.grobic.ponceapp.ponceapp.Modelos.Usuario;
 import cl.grobic.ponceapp.ponceapp.R;
 
-public class MainActivity extends AppCompatActivity
+public class ContactosActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ListView listViewContactos;
+    private ArrayList<Usuario> listaContactos;
+    private ContactosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +42,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -42,6 +51,46 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        listViewContactos = (ListView) findViewById(R.id.listViewContactos);
+        listaContactos = new ArrayList<Usuario>();
+        adapter = new ContactosAdapter(this, listaContactos);
+        listViewContactos.setAdapter(adapter);
+
+        obtenerContactos();
+
+    }
+
+    private void obtenerContactos() {
+        try {
+            JSONObject user = new JSONObject(getIntent().getStringExtra("user_info"));
+            SendRequest request = new SendRequest("user/" + user.get("id") + "/friends", "GET");
+            request.execute();
+
+            JSONArray jsonContactos = new JSONArray(request.get());
+
+            for (int i = 0; i < jsonContactos.length(); i++){
+                JSONObject jsonContacto = jsonContactos.getJSONObject(i);
+                Usuario contacto = new Usuario();
+
+                contacto.setNickname(jsonContacto.get("nickname").toString());
+                if (!jsonContacto.isNull("subnick"))
+                    contacto.setSubnick(jsonContacto.get("subnick").toString());
+                else
+                    contacto.setSubnick("");
+
+                listaContactos.add(0, contacto);
+            }
+
+            adapter.notifyDataSetChanged();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

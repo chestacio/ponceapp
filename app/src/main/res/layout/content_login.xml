@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/editTextCorreo"
+        android:id="@+id/editTextCorreoLogin"
         android:hint="Correo electrónico"
         android:layout_below="@+id/textViewTitulo"
         android:layout_centerHorizontal="true"
@@ -39,8 +39,8 @@
         android:inputType="textPassword"
         android:hint="Contraseña"
         android:ems="10"
-        android:id="@+id/editTextPassword"
-        android:layout_below="@+id/editTextCorreo"
+        android:id="@+id/editTextPasswordLogin"
+        android:layout_below="@+id/editTextCorreoLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="41dp" />
 
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:text="Iniciar Sesión"
         android:id="@+id/botonIniciarSesion"
-        android:layout_below="@+id/editTextPassword"
+        android:layout_below="@+id/editTextPasswordLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp" />
 </RelativeLayout>

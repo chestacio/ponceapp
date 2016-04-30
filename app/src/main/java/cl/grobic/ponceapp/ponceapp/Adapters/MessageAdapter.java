@@ -32,7 +32,7 @@ public class MessageAdapter extends ArrayAdapter<MensajeChatModel>{
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View row = inflater.inflate(R.layout.single_message_layout, parent, false);
+        View row = inflater.inflate(R.layout.fila_mensaje, parent, false);
 
         TextView textViewNickname = (TextView) row.findViewById(R.id.textViewNicknameChatMensaje);
         TextView textViewMensajes = (TextView) row.findViewById(R.id.textViewMensajeChatMensaje);

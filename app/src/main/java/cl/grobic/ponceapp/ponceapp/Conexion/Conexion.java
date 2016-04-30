@@ -13,11 +13,13 @@ import cl.grobic.ponceapp.ponceapp.Activities.ChatActivity;
  */
 public class Conexion {
 
+    private String url = "http://192.168.0.109:3000";
+
     // Conexión al server
     private Socket socket;
     {
         try {
-            socket = IO.socket("http://192.168.0.109:3000");
+            socket = IO.socket(url);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
