@@ -49,6 +49,7 @@ Para probar que el Server funciona basta con abrir la dirección ```http://local
 Ejemplo: ```http://dominio/login/```
 
 Body:
+
     {
         "email": "indo@indo.com",
         "password": "clst",
