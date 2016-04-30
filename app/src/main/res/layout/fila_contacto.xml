@@ -8,6 +8,7 @@
 
     <ImageView
         android:layout_width="45dp"
+        android:id="@+id/imageViewAvatarListaContactos"
         android:layout_height="45dp"
         android:src="@drawable/default_avatar"/>
 

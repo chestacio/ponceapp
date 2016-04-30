@@ -5,6 +5,9 @@ module.exports = {
 		app.get('/', function(req, res) {
 			res.sendFile(__dirname + '/index.html');
 		});
+		app.get('/media/:name', function(req, res) {
+			res.sendFile(__dirname + '/media/' + req.params.name);
+		});
 		app.post('/login', function(req, res) {
 			user.login(req.body, res);
 		});

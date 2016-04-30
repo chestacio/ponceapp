@@ -1,5 +1,7 @@
 package cl.grobic.ponceapp.ponceapp.Activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import cl.grobic.ponceapp.ponceapp.Adapters.ContactosAdapter;
+import cl.grobic.ponceapp.ponceapp.Conexion.ObtenerAvatar;
 import cl.grobic.ponceapp.ponceapp.Conexion.SendRequest;
 import cl.grobic.ponceapp.ponceapp.Modelos.MensajeChatModel;
 import cl.grobic.ponceapp.ponceapp.Modelos.Usuario;
@@ -81,6 +85,21 @@ public class ContactosActivity extends AppCompatActivity
                     contacto.setSubnick(jsonContacto.get("subnick").toString());
                 else
                     contacto.setSubnick("");
+
+                // Se carga el avatar del server
+                if (!jsonContacto.isNull("avatar")){
+                    ObtenerAvatar obj = new ObtenerAvatar();
+                    obj.execute(jsonContacto.get("avatar").toString());
+                    contacto.setAvatar(obj.get());
+                }
+                // En caso de que no tenga avatar se carga el por defecto desde Resources
+                else{
+                    Bitmap avatarDefecto = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+                    contacto.setAvatar(avatarDefecto);
+                }
+
+                listaContactos.add(contacto);
+
             }
 
             adapter.notifyDataSetChanged();

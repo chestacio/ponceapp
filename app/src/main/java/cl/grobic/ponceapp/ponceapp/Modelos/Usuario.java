@@ -1,5 +1,8 @@
 package cl.grobic.ponceapp.ponceapp.Modelos;
 
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
 /**
  * Created by Carlos on 26-04-2016.
  */
@@ -10,7 +13,7 @@ public class Usuario {
     private String email;
     private String nickname_style;
     private String msg_style;
-    private String avatar;
+    private Bitmap avatar;
     private String state;
 
     public int getId() {
@@ -61,11 +64,11 @@ public class Usuario {
         this.msg_style = msg_style;
     }
 
-    public String getAvatar() {
+    public Bitmap getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(Bitmap avatar) {
         this.avatar = avatar;
     }
 
