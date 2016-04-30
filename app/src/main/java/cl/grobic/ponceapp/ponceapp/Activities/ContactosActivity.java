@@ -63,12 +63,15 @@ public class ContactosActivity extends AppCompatActivity
 
     private void obtenerContactos() {
         try {
+            // Obtiene la info del usuario
             JSONObject user = new JSONObject(getIntent().getStringExtra("user_info"));
+
+            // Llamada al server para obtener los contactos del usuario logueado
             SendRequest request = new SendRequest("user/" + user.get("id") + "/friends", "GET");
             request.execute();
-
             JSONArray jsonContactos = new JSONArray(request.get());
 
+            // Se parsea los JSON a objetos Usuario y se agregan al ListView
             for (int i = 0; i < jsonContactos.length(); i++){
                 JSONObject jsonContacto = jsonContactos.getJSONObject(i);
                 Usuario contacto = new Usuario();
@@ -78,8 +81,6 @@ public class ContactosActivity extends AppCompatActivity
                     contacto.setSubnick(jsonContacto.get("subnick").toString());
                 else
                     contacto.setSubnick("");
-
-                listaContactos.add(0, contacto);
             }
 
             adapter.notifyDataSetChanged();

@@ -17,6 +17,19 @@ import java.net.URL;
 /**
  * Created by Carlos on 29-04-2016.
  */
+
+/*
+    Clase hecha para conectar la app al Server.
+
+    Se crea un objeto del tipo SendRequest y en el constructor se especifica el EndPoint y
+    el tipo (GET, POST o PUT). Para ejecutar es mediante el método .execute([parametro]) que
+    dependiendo del tipo de consulta se puede ingresar un objeto del tipo JSONObject con los
+    parámetros correspondientes según la consulta. Para obtener la respuesta del server es
+    mediante el método .get() que retorna un JSON pero formateado en un String.
+
+ */
+
+// Tipos de datos                        <Entrada, Medio(?), Retorno>
 public class SendRequest extends AsyncTask<JSONObject, Void, String>{
 
     private String url = "http://192.168.0.105:3000";
@@ -39,6 +52,7 @@ public class SendRequest extends AsyncTask<JSONObject, Void, String>{
             con.setRequestProperty("Accept", "application/json");
             con.setRequestMethod(method);
 
+            // Si es del tipo POST o PUT se agregan los parametros
             if (!method.equals("GET")){
                 con.setDoOutput(true);
                 con.setDoInput(true);
@@ -47,8 +61,7 @@ public class SendRequest extends AsyncTask<JSONObject, Void, String>{
                 wr.flush();
             }
 
-
-            //display what returns the POST request
+            // Obteniendo la respuesta
             StringBuilder sb = new StringBuilder();
             int HttpResult = con.getResponseCode();
             if (HttpResult == HttpURLConnection.HTTP_OK) {

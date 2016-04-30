@@ -44,22 +44,26 @@ public class LoginActivity extends AppCompatActivity {
                 email = emailEditText.getText().toString();
                 contraseña = contraseñaEditText.getText().toString();
 
+                // Poniendo los parámetros del body para el request del Login
                 JSONObject json = new JSONObject();
 
                 try {
                     json.put("email", email);
                     json.put("password", contraseña);
 
-                    SendRequest login = new SendRequest("login", "POST");
-                    login.execute(json);
-                    String respuesta = login.get();
+                    SendRequest loginRequest = new SendRequest("login", "POST");
+                    loginRequest.execute(json);
+                    String respuesta = loginRequest.get();
 
                     JSONObject jsonRespuesta = new JSONObject(respuesta);
 
+                    // Si tiene la llave "status" entonces no pudo iniciar sesión
                     if (jsonRespuesta.has("status")){
                         Toast toast = Toast.makeText(LoginActivity.this, jsonRespuesta.get("message").toString(), Toast.LENGTH_SHORT);
                         toast.show();
                     }
+                    // En caso de que sí coincida el correo con el usuario se lanza la activity
+                    // de los contactos y se le pasa la info del contacto que logueó recién
                     else{
                         Intent intent = new Intent(LoginActivity.this, ContactosActivity.class);
                         intent.putExtra("user_info", respuesta);
