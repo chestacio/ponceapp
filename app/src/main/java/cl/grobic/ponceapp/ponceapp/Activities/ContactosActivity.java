@@ -1,5 +1,6 @@
 package cl.grobic.ponceapp.ponceapp.Activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -53,6 +56,14 @@ public class ContactosActivity extends AppCompatActivity
         listaContactos = new ArrayList<Usuario>();
         adapter = new ContactosAdapter(this, listaContactos);
         listViewContactos.setAdapter(adapter);
+
+        listViewContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ContactosActivity.this, ChatActivity.class);
+                startActivity(intent);
+            }
+        });
 
         obtenerContactos();
 
