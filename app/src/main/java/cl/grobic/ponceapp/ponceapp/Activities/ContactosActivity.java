@@ -68,6 +68,7 @@ public class ContactosActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ContactosActivity.this, ChatActivity.class);
+                intent.putExtra("user_info", getIntent().getStringExtra("user_info"));
                 startActivity(intent);
             }
         });

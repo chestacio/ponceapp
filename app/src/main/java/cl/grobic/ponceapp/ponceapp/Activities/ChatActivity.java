@@ -29,6 +29,7 @@ public class ChatActivity extends Activity {
     private ArrayList<MensajeChatModel> listaMensajes;
     private MessageAdapter adapter;
     private Conexion conexion;
+    private JSONObject user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,11 @@ public class ChatActivity extends Activity {
         listaMensajes = new ArrayList<MensajeChatModel>();
         adapter = new MessageAdapter(this, listaMensajes);
         listViewMensajes.setAdapter(adapter);
+        try {
+            user = new JSONObject(getIntent().getStringExtra("user_info"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         botonEnviarMensaje.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +65,7 @@ public class ChatActivity extends Activity {
         JSONObject sentData = new JSONObject();
         try {
             sentData.put("msg", message);
-            sentData.put("username", "testAndroid");
+            sentData.put("username", user.get("nickname").toString());
             conexion.getSocket().emit("chat message", sentData);
         } catch (JSONException e) {
             e.printStackTrace();
