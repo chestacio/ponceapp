@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
 
@@ -35,7 +36,6 @@ public class ChatActivity extends Activity {
         setContentView(R.layout.chat);
         conexion = new Conexion();
         conexion.conectar("chat message", handleIncomingMessages);
-
 
         editTextIngresarMensaje = (EditText) findViewById(R.id.editTextIngresarMensaje);
         botonEnviarMensaje = (Button) findViewById(R.id.botonEnviarMensaje);

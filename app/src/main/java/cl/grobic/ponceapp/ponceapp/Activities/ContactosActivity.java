@@ -10,11 +10,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +37,9 @@ public class ContactosActivity extends AppCompatActivity
     private ListView listViewContactos;
     private ArrayList<Usuario> listaContactos;
     private ContactosAdapter adapter;
+    private TextView textViewNicknameSideMenu;
+    private TextView textViewEmailSideMenu;
+    private JSONObject user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +56,10 @@ public class ContactosActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
 
         listViewContactos = (ListView) findViewById(R.id.listViewContactos);
+
         listaContactos = new ArrayList<Usuario>();
         adapter = new ContactosAdapter(this, listaContactos);
         listViewContactos.setAdapter(adapter);
@@ -65,15 +72,23 @@ public class ContactosActivity extends AppCompatActivity
             }
         });
 
+        textViewEmailSideMenu = (TextView) header.findViewById(R.id.textViewEmailSideMenu);
+        textViewNicknameSideMenu = (TextView) header.findViewById(R.id.textViewNicknameSideMenu);
+
+        try {
+            // Obtiene la info del usuario
+            user = new JSONObject(getIntent().getStringExtra("user_info"));
+            textViewEmailSideMenu.setText(user.get("email").toString());
+            textViewNicknameSideMenu.setText(user.get("nickname").toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         obtenerContactos();
 
     }
 
     private void obtenerContactos() {
         try {
-            // Obtiene la info del usuario
-            JSONObject user = new JSONObject(getIntent().getStringExtra("user_info"));
-
             // Llamada al server para obtener los contactos del usuario logueado
             SendRequest request = new SendRequest("user/" + user.get("id") + "/friends", "GET");
             request.execute();

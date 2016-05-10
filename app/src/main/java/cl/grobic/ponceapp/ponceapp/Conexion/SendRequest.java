@@ -30,7 +30,7 @@ import java.net.URL;
 // Tipos de datos                        <Entrada, Medio(?), Retorno>
 public class SendRequest extends AsyncTask<JSONObject, Void, String>{
 
-    private String url = "http://192.168.0.20:3000";
+    private String url = "http://192.168.56.2:3000";
     private String api;
     private String method;
 
