@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -54,7 +53,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     SendRequest loginRequest = new SendRequest("login", "POST");
                     loginRequest.execute(json);
+
+
                     String respuesta = loginRequest.get();
+
+                    if (respuesta == null){
+                        Toast toast = Toast.makeText(LoginActivity.this, "Error al conectar al Server", Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
 
                     JSONObject jsonRespuesta = new JSONObject(respuesta);
 

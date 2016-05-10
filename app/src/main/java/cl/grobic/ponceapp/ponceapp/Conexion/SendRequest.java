@@ -1,15 +1,19 @@
 package cl.grobic.ponceapp.ponceapp.Conexion;
 
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
@@ -50,15 +54,15 @@ public class SendRequest extends AsyncTask<JSONObject, Void, String>{
             con.setRequestProperty("Accept", "application/json");
             con.setRequestMethod(method);
 
+            con.setConnectTimeout(3000);
+
             // Si es del tipo POST o PUT se agregan los parametros
-            if (!method.equals("GET")){
+            if (!method.equals("GET")) {
                 con.setDoOutput(true);
                 con.setDoInput(true);
 
-                int i;
-                i  =4;
-
-                OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+                OutputStream os = con.getOutputStream();
+                OutputStreamWriter wr = new OutputStreamWriter(os);
                 wr.write(params[0].toString());
                 wr.flush();
             }
@@ -79,12 +83,14 @@ public class SendRequest extends AsyncTask<JSONObject, Void, String>{
             } else {
                 System.out.println(con.getResponseMessage());
             }
-        }
-        catch (ProtocolException e) {
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (SocketTimeoutException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

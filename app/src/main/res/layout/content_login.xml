@@ -14,6 +14,39 @@
     tools:showIn="@layout/activity_login">
 
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/imageView2"
+        android:layout_alignParentTop="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Live "
+            android:textSize="33dp"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/textView2"
+            android:layout_toStartOf="@+id/textView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Yeessenger"
+            android:textSize="33dp"
+            android:id="@+id/textView2"
+            android:layout_below="@+id/textView"
+            android:layout_alignRight="@+id/botonIniciarSesion"
+            android:layout_alignEnd="@+id/botonIniciarSesion"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <ImageView
         android:layout_width="250dp"
         android:layout_height="150dp"
@@ -58,14 +91,5 @@
         android:src="@drawable/boton_iniciar_sesion"
 
         />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView3"
-        android:src="@drawable/letras"
-        android:layout_above="@+id/imageView2"
-        android:layout_centerHorizontal="true" />
-
 
 </RelativeLayout>
