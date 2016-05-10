@@ -6,21 +6,21 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:background="@drawable/login_bg"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="cl.grobic.ponceapp.ponceapp.Activities.LoginActivity"
     tools:showIn="@layout/activity_login">
 
-    <TextView
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Live Yeessenger"
-        android:id="@+id/textViewTitulo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp" />
+        android:id="@+id/imageView2"
+        android:src="@drawable/ventana_user_conectado"
+        android:layout_above="@+id/editTextCorreoLogin"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -29,9 +29,11 @@
         android:ems="10"
         android:id="@+id/editTextCorreoLogin"
         android:hint="Correo electrónico"
-        android:layout_below="@+id/textViewTitulo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp" />
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/imageView2"
+        android:layout_alignStart="@+id/imageView2"
+        android:layout_alignRight="@+id/imageView2"
+        android:layout_alignEnd="@+id/imageView2" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -41,15 +43,29 @@
         android:ems="10"
         android:id="@+id/editTextPasswordLogin"
         android:layout_below="@+id/editTextCorreoLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="41dp" />
+        android:layout_alignLeft="@+id/editTextCorreoLogin"
+        android:layout_alignStart="@+id/editTextCorreoLogin"
+        android:layout_alignRight="@+id/editTextCorreoLogin"
+        android:layout_alignEnd="@+id/editTextCorreoLogin" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Iniciar Sesión"
         android:id="@+id/botonIniciarSesion"
         android:layout_below="@+id/editTextPasswordLogin"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp" />
+        android:src="@drawable/boton_iniciar_sesion"
+
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:src="@drawable/letras"
+        android:layout_above="@+id/imageView2"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>

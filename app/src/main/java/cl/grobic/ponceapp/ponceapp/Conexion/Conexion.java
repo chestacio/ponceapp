@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
  */
 public class Conexion {
 
-    private String url = "http://192.168.0.109:3000";
+    private String url = "http://192.168.0.20:3000";
 
     // Conexión al server
     private Socket socket;

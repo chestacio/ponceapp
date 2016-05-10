@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -19,7 +20,7 @@ import cl.grobic.ponceapp.ponceapp.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button btnIniciarSesion;
+    private ImageButton btnIniciarSesion;
     private EditText emailEditText;
     private EditText contraseñaEditText;
     private String email;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = (EditText) findViewById(R.id.editTextCorreoLogin);
         contraseñaEditText = (EditText) findViewById(R.id.editTextPasswordLogin);
 
-        btnIniciarSesion = (Button) findViewById(R.id.botonIniciarSesion);
+        btnIniciarSesion = (ImageButton) findViewById(R.id.botonIniciarSesion);
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
