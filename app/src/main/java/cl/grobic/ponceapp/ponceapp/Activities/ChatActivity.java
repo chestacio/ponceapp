@@ -2,6 +2,8 @@ package cl.grobic.ponceapp.ponceapp.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +47,12 @@ public class ChatActivity extends Activity {
         listaMensajes = new ArrayList<MensajeChatModel>();
         adapter = new MessageAdapter(this, listaMensajes);
         listViewMensajes.setAdapter(adapter);
+        try {
+            user = new JSONObject(getIntent().getStringExtra("user_info"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         try {
             user = new JSONObject(getIntent().getStringExtra("user_info"));
         } catch (JSONException e) {
@@ -104,4 +112,11 @@ public class ChatActivity extends Activity {
             e.printStackTrace();
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_chat, menu);
+        return true;
+    }
+
 }
