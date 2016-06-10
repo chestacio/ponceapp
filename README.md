@@ -154,6 +154,7 @@ Respuesta:
         "id": 2,
         "nickname": "eyesan",
         "subnick": null,
+        "email": "eye@eye.cl",
         "nickname_style": null,
         "avatar": null,
         "state": "offline"
@@ -162,8 +163,9 @@ Respuesta:
         "id": 3,
         "nickname": "indomicu",
         "subnick": "CLST <3",
+        "email": "indo@indo.cl",
         "nickname_style": null,
-        "avatar": "foto.png",
+        "avatar": "duck.png",
         "state": "offline"
       }
     ]
