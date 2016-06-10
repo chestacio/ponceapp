@@ -10,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,8 +66,12 @@ public class ContactosActivity extends AppCompatActivity
         listViewContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Usuario userDestino = (Usuario) listViewContactos.getItemAtPosition(position);
+
                 Intent intent = new Intent(ContactosActivity.this, ChatActivity.class);
                 intent.putExtra("user_info", getIntent().getStringExtra("user_info"));
+                intent.putExtra("user_destino", userDestino.getNickname());
                 startActivity(intent);
             }
         });

@@ -5,7 +5,7 @@ var bodyparser = require('body-parser');
 var connection = require('./connection');
 var routes = require('./routes');
 
-var active_users = [];
+var users = {};
 
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
@@ -15,26 +15,56 @@ routes.configure(app);
 
 io.on('connection', function(socket){
 	console.log('a user connected: ' + socket.id);
-	socket.on('chat message', function(msg){
-		console.log(msg.username + ': ' + msg.msg);
-		io.emit('chat message', msg);
+
+	socket.on('chat message', function(data){
+		console.log(data.username + ': ' + data.msg);
+
+		var msg = data.msg.trim();
+
+		// Los chat privados se manejarán mediante un mensaje tipo:
+		// data.msg = '/w destino mensaje'
+		if (msg.substr(0, 3) == '/w '){
+			msg = msg.substr(3);
+			var spaceIndex = msg.indexOf(' ');
+			var to = msg.substr(0, spaceIndex);
+			var msg = msg.substr(spaceIndex + 1).trim();
+
+			console.log('');
+			console.log(to);
+			console.log(msg);
+
+			if (to in users) {
+				data = { username: data.username, msg: msg };
+				users[to].emit('chat message', data);
+			}
+		}
+
+		//io.emit('chat message', data);
 	});
 
 	socket.on('new user', function(data, callback){
+		if (data in users){
+			// holi
+		}
 		// Si el usuario no está 'logueado'
-		if (active_users.indexOf(data) == -1){
+		else {
 			socket.nickname = data;
-			active_users.push(socket.nickname);
-			io.emit('active_users', active_users);	
+			users[socket.nickname] = socket;
+			updateUsers();	
 		}
 	});
 
 	socket.on('disconnect', function(data){
 		if(!socket.nickname)
 			return
-		active_users.splice(active_users.indexOf(socket.nickname), 1);
-		io.emit('active_users', active_users);	
+		delete users[socket.nickname];
+		updateUsers();	
 	});
+
+	function updateUsers(){
+		io.emit('active_users', Object.keys(users));
+		console.log(Object.keys(users));
+	}
 });
 
 http.listen(3000, function(){

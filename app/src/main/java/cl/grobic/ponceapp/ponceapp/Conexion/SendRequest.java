@@ -34,7 +34,8 @@ import java.net.URL;
 // Tipos de datos                        <Entrada, Medio(?), Retorno>
 public class SendRequest extends AsyncTask<JSONObject, Void, String>{
 
-    private String url = "http://10.6.210.77:3000";
+    private String url = "http://192.168.0.100:3000";
+
     private String api;
     private String method;
 

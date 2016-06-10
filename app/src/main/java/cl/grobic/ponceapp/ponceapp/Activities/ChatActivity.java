@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
 
@@ -38,7 +37,7 @@ public class ChatActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
         conexion = new Conexion();
-        conexion.conectar("chat message", handleIncomingMessages);
+        conexion.escuchar("chat message", handleIncomingMessages);
 
         editTextIngresarMensaje = (EditText) findViewById(R.id.editTextIngresarMensaje);
         botonEnviarMensaje = (Button) findViewById(R.id.botonEnviarMensaje);
@@ -71,10 +70,17 @@ public class ChatActivity extends Activity {
         String message = editTextIngresarMensaje.getText().toString();
         editTextIngresarMensaje.setText("");
         JSONObject sentData = new JSONObject();
+
+        // Dado que los mensajes privados los manejo como '/w destino mensaje'
+        // le agrego los comandos '/w destino' a los datos del mensaje del envío al server
         try {
-            sentData.put("msg", message);
-            sentData.put("username", user.get("nickname").toString());
+            String nickname = user.get("nickname").toString();
+            sentData.put("msg", "/w " + getIntent().getStringExtra("user_destino") + " " + message);
+            sentData.put("username", nickname);
             conexion.getSocket().emit("chat message", sentData);
+
+            addMessageToListView(nickname, message);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -87,35 +93,32 @@ public class ChatActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    addMessageToListView(data);
+                    try {
+                        JSONObject data = (JSONObject) args[0];
+                        addMessageToListView(data.getString("username").toString(), data.getString("msg").toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
     };
 
-    private void addMessageToListView(JSONObject sentData) {
-        try {
-            String username = sentData.getString("username").toString();
-            String msg = sentData.getString("msg").toString();
+    private void addMessageToListView(String username, String msg) {
+        MensajeChatModel newMsg = new MensajeChatModel();
+        newMsg.setMsg(msg);
+        newMsg.setNickname(username);
 
-            MensajeChatModel newMsg = new MensajeChatModel();
-            newMsg.setMsg(msg);
-            newMsg.setNickname(username);
+        listaMensajes.add(newMsg);
+        adapter.notifyDataSetChanged();
 
-            listaMensajes.add(newMsg);
-            adapter.notifyDataSetChanged();
+        listViewMensajes.setSelection(adapter.getCount()-1);
 
-            listViewMensajes.setSelection(adapter.getCount()-1);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_chat, menu);
+        //inflater.inflate(R.menu.menu_chat, menu);
         return true;
     }
 

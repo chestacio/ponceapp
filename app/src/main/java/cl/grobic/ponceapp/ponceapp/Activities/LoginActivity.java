@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
+import cl.grobic.ponceapp.ponceapp.Conexion.Conexion;
 import cl.grobic.ponceapp.ponceapp.Conexion.SendRequest;
 import cl.grobic.ponceapp.ponceapp.R;
 
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText contraseñaEditText;
     private String email;
     private String contraseña;
+    private Conexion conexion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
                     SendRequest loginRequest = new SendRequest("login", "POST");
                     loginRequest.execute(json);
 
-
                     String respuesta = loginRequest.get();
 
                     if (respuesta == null){
@@ -70,9 +71,13 @@ public class LoginActivity extends AppCompatActivity {
                         Toast toast = Toast.makeText(LoginActivity.this, jsonRespuesta.get("message").toString(), Toast.LENGTH_SHORT);
                         toast.show();
                     }
-                    // En caso de que sí coincida el correo con el usuario se lanza la activity
-                    // de los contactos y se le pasa la info del contacto que logueó recién
+                    // En caso de que sí coincida el correo con el usuario se notifica al server
+                    // que se logueó, se lanza la activity de los contactos
+                    // y se le pasa la info del contacto que logueó recién
                     else{
+                        conexion = new Conexion();
+                        conexion.getSocket().emit("new user", jsonRespuesta.get("nickname").toString());
+
                         Intent intent = new Intent(LoginActivity.this, ContactosActivity.class);
                         intent.putExtra("user_info", respuesta);
                         startActivity(intent);

@@ -11,13 +11,14 @@ import java.net.URISyntaxException;
  */
 public class Conexion {
 
-    private String url = "http://10.6.210.77:3000";
+    private String url = "http://192.168.0.100:3000";
 
     // Conexión al server
     private Socket socket;
     {
         try {
             socket = IO.socket(url);
+            socket.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -27,9 +28,7 @@ public class Conexion {
         return socket;
     }
 
-    public void conectar(String tag,Emitter.Listener handle){
-
-        socket.connect();
+    public void escuchar(String tag,Emitter.Listener handle){
         socket.on(tag, handle);
     }
 
