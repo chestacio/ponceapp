@@ -71,7 +71,7 @@ public class ContactosActivity extends AppCompatActivity
 
                 Intent intent = new Intent(ContactosActivity.this, ChatActivity.class);
                 intent.putExtra("user_info", getIntent().getStringExtra("user_info"));
-                intent.putExtra("user_destino", userDestino.getNickname());
+                intent.putExtra("user_destino", userDestino.getEmail());
                 startActivity(intent);
             }
         });
@@ -82,8 +82,10 @@ public class ContactosActivity extends AppCompatActivity
         try {
             // Obtiene la info del usuario
             user = new JSONObject(getIntent().getStringExtra("user_info"));
+
             textViewEmailSideMenu.setText(user.get("email").toString());
             textViewNicknameSideMenu.setText(user.get("nickname").toString());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -104,6 +106,9 @@ public class ContactosActivity extends AppCompatActivity
                 Usuario contacto = new Usuario();
 
                 contacto.setNickname(jsonContacto.get("nickname").toString());
+                contacto.setEmail(jsonContacto.get("email").toString());
+                contacto.setState(jsonContacto.get("state").toString());
+
                 if (!jsonContacto.isNull("subnick"))
                     contacto.setSubnick(jsonContacto.get("subnick").toString());
                 else

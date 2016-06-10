@@ -17,7 +17,7 @@ io.on('connection', function(socket){
 	console.log('a user connected: ' + socket.id);
 
 	socket.on('chat message', function(data){
-		console.log(data.username + ': ' + data.msg);
+		console.log(data.username + ' (' + data.email + '): ' + data.msg);
 
 		var msg = data.msg.trim();
 
@@ -29,12 +29,8 @@ io.on('connection', function(socket){
 			var to = msg.substr(0, spaceIndex);
 			var msg = msg.substr(spaceIndex + 1).trim();
 
-			console.log('');
-			console.log(to);
-			console.log(msg);
-
 			if (to in users) {
-				data = { username: data.username, msg: msg };
+				data = { username: data.username, msg: msg, email: data.email };
 				users[to].emit('chat message', data);
 			}
 		}

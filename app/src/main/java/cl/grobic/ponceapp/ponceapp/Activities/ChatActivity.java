@@ -31,6 +31,7 @@ public class ChatActivity extends Activity {
     private MessageAdapter adapter;
     private Conexion conexion;
     private JSONObject user;
+    private String usuarioDestino;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class ChatActivity extends Activity {
         setContentView(R.layout.chat);
         conexion = new Conexion();
         conexion.escuchar("chat message", handleIncomingMessages);
+
+        usuarioDestino = getIntent().getStringExtra("user_destino");
 
         editTextIngresarMensaje = (EditText) findViewById(R.id.editTextIngresarMensaje);
         botonEnviarMensaje = (Button) findViewById(R.id.botonEnviarMensaje);
@@ -75,8 +78,10 @@ public class ChatActivity extends Activity {
         // le agrego los comandos '/w destino' a los datos del mensaje del envío al server
         try {
             String nickname = user.get("nickname").toString();
-            sentData.put("msg", "/w " + getIntent().getStringExtra("user_destino") + " " + message);
+            String email  = user.get("email").toString();
+            sentData.put("msg", "/w " + usuarioDestino + " " + message);
             sentData.put("username", nickname);
+            sentData.put("email", email);
             conexion.getSocket().emit("chat message", sentData);
 
             addMessageToListView(nickname, message);
@@ -95,7 +100,19 @@ public class ChatActivity extends Activity {
                 public void run() {
                     try {
                         JSONObject data = (JSONObject) args[0];
-                        addMessageToListView(data.getString("username").toString(), data.getString("msg").toString());
+                        String emailIncommingMessage = data.getString("email").toString();
+                        String usernameIncommingMessage = data.getString("username").toString();
+                        String msgIncommingMessage = data.getString("msg").toString();
+
+                        // Si es que el mensaje entrante pertenece al mismo contacto del
+                        // chat de la activity actual se agrega al list view.
+
+                        // Esto es porque el Listener recibe todos los mensajes con destino
+                        // al usuario logueado, entonces hay que filtrar y agregar al ListView solo
+                        // aquel que corresponde a la misma persona, y no agregar un mensaje de un
+                        // tercero a la conversa
+                        if (emailIncommingMessage.equals(usuarioDestino))
+                            addMessageToListView(usernameIncommingMessage, msgIncommingMessage);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

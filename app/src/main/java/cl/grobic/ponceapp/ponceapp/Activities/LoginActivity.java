@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     // y se le pasa la info del contacto que logueó recién
                     else{
                         conexion = new Conexion();
-                        conexion.getSocket().emit("new user", jsonRespuesta.get("nickname").toString());
+                        conexion.getSocket().emit("new user", jsonRespuesta.get("email").toString());
 
                         Intent intent = new Intent(LoginActivity.this, ContactosActivity.class);
                         intent.putExtra("user_info", respuesta);
