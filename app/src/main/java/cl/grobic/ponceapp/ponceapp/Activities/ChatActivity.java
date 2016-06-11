@@ -155,10 +155,12 @@ public class ChatActivity extends Activity {
     }
 
     // Guarda el mensaje recibido/enviado a la memoria interna
+
+    // Nota: Al recibir mensajes los escribe repetidas veces en el archivo! NPI la razón
     private void almacenarMensaje(String nickname, String mensaje) {
         try {
-            // Lee el existente archivo [email].xml del actual directorio, agrega un nuevo mensaje
-            // y vuelve a reescribir el archivo.
+            // Lee el  archivo [email_destino].xml (en /data/data/cl.grobic.ponceapp.ponceapp/files/),
+            // agrega un nuevo mensaje y vuelve a reescribir el archivo.
             FileInputStream fil = openFileInput(emailDestino + ".xml");
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -188,7 +190,6 @@ public class ChatActivity extends Activity {
             Transformer transformer = transformerFactory.newTransformer();
             StreamResult result = new StreamResult(fout);
             transformer.transform(source, result);
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -263,12 +264,25 @@ public class ChatActivity extends Activity {
 
                 // Iteramos sobre los hijos ("nodoMensaje") y agregamos el mensaje al ListView
                 NodeList hijos = root.getChildNodes();
+
+                // Ya que al recibir mensajes los guarda repetidas veces en el .xml (NPI por qué)
+                // simplemente omito los mensajes repetidos que estén seguidos y agrego
+                // sólo aquellos que difieren con el anterior.
+                Node mensajeAnterior = hijos.item(0);
                 for (int i = 0; i < hijos.getLength(); i++) {
                     Node nodoMensaje = hijos.item(i);
                     String nickname = nodoMensaje.getFirstChild().getTextContent();
                     String msg = nodoMensaje.getLastChild().getTextContent();
 
-                    addMessageToListView(nickname, msg);
+                    // Se agrega el primer mensaje
+                    if (i == 0)
+                        addMessageToListView(nickname, msg);
+
+                    // Si el mensaje no es igual al anterior se agrega al ListView
+                    if (!nodoMensaje.isEqualNode(mensajeAnterior))
+                        addMessageToListView(nickname, msg);
+
+                    mensajeAnterior = hijos.item(i);
                 }
 
                 fil.close();
@@ -285,6 +299,7 @@ public class ChatActivity extends Activity {
         }
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
