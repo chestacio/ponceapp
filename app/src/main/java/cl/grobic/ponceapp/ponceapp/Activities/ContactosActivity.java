@@ -17,6 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.squareup.okhttp.internal.Util;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,10 +28,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import cl.grobic.ponceapp.ponceapp.Adapters.ContactosAdapter;
+import cl.grobic.ponceapp.ponceapp.Conexion.Conexion;
 import cl.grobic.ponceapp.ponceapp.Conexion.ObtenerAvatar;
 import cl.grobic.ponceapp.ponceapp.Conexion.SendRequest;
 import cl.grobic.ponceapp.ponceapp.Modelos.Usuario;
 import cl.grobic.ponceapp.ponceapp.R;
+import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
 
 public class ContactosActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,6 +44,7 @@ public class ContactosActivity extends AppCompatActivity
     private TextView textViewNicknameSideMenu;
     private TextView textViewEmailSideMenu;
     private JSONObject user;
+    private Conexion conexion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +97,10 @@ public class ContactosActivity extends AppCompatActivity
         }
         obtenerContactos();
 
+        // Escucha todas las conversas para almacenar los mensajes
+        conexion = new Conexion();
+        conexion.escuchar("chat message", handleIncomingMessages);
+
     }
 
     private void obtenerContactos() {
@@ -140,6 +150,28 @@ public class ContactosActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
+
+    // Maneja los mensajes entrantes y salientes al socket
+    private Emitter.Listener handleIncomingMessages = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        JSONObject data = (JSONObject) args[0];
+                        String emailIncommingMessage = data.getString("email").toString();
+                        String usernameIncommingMessage = data.getString("username").toString();
+                        String msgIncommingMessage = data.getString("msg").toString();
+
+                        Utilidades.almacenarMensaje(ContactosActivity.this, emailIncommingMessage, usernameIncommingMessage, msgIncommingMessage);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    };
 
     @Override
     public void onBackPressed() {

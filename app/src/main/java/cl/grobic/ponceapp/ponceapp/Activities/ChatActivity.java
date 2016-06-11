@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 
@@ -42,6 +41,7 @@ import cl.grobic.ponceapp.ponceapp.Adapters.MessageAdapter;
 import cl.grobic.ponceapp.ponceapp.Conexion.Conexion;
 import cl.grobic.ponceapp.ponceapp.Modelos.MensajeChatModel;
 import cl.grobic.ponceapp.ponceapp.R;
+import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
 
 
 public class ChatActivity extends Activity {
@@ -60,6 +60,7 @@ public class ChatActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
+        // Escucha la conversa actual para agregar los mensajes al ListView
         conexion = new Conexion();
         conexion.escuchar("chat message", handleIncomingMessages);
 
@@ -104,7 +105,7 @@ public class ChatActivity extends Activity {
             conexion.getSocket().emit("chat message", sentData);
 
             addMessageToListView(nickname, message);
-            almacenarMensaje(nickname, message);
+            Utilidades.almacenarMensaje(this, emailDestino, nickname, message);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -131,10 +132,8 @@ public class ChatActivity extends Activity {
                         // al usuario logueado, entonces hay que filtrar y agregar al ListView solo
                         // aquel que corresponde a la misma persona, y no agregar un mensaje de un
                         // tercero a la conversa
-                        if (emailIncommingMessage.equals(emailDestino)) {
+                        if (emailIncommingMessage.equals(emailDestino))
                             addMessageToListView(usernameIncommingMessage, msgIncommingMessage);
-                            almacenarMensaje(usernameIncommingMessage, msgIncommingMessage);
-                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -142,73 +141,6 @@ public class ChatActivity extends Activity {
             });
         }
     };
-
-    private void addMessageToListView(String username, String msg) {
-        MensajeChatModel newMsg = new MensajeChatModel();
-        newMsg.setMsg(msg);
-        newMsg.setNickname(username);
-
-        listaMensajes.add(newMsg);
-        adapter.notifyDataSetChanged();
-
-        listViewMensajes.setSelection(adapter.getCount()-1);
-    }
-
-    // Guarda el mensaje recibido/enviado a la memoria interna
-
-    // Nota: Al recibir mensajes los escribe repetidas veces en el archivo! NPI la razón
-    private void almacenarMensaje(String nickname, String mensaje) {
-        try {
-            // Lee el  archivo [email_destino].xml (en /data/data/cl.grobic.ponceapp.ponceapp/files/),
-            // agrega un nuevo mensaje y vuelve a reescribir el archivo.
-            FileInputStream fil = openFileInput(emailDestino + ".xml");
-
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(fil);
-
-            Element root = document.getDocumentElement();
-
-            Element nodoMensaje = document.createElement("nodoMensaje");
-            root.appendChild(nodoMensaje);
-
-            Element elementoNickname = document.createElement("nickname");
-            elementoNickname.appendChild(document.createTextNode(nickname));
-            nodoMensaje.appendChild(elementoNickname);
-
-            Element elementoMensaje = document.createElement("mensaje");
-            elementoMensaje.appendChild(document.createTextNode(mensaje));
-            nodoMensaje.appendChild(elementoMensaje);
-
-            //Creamos un fichero en memoria interna
-            OutputStreamWriter fout = new OutputStreamWriter(
-                    openFileOutput(emailDestino + ".xml", Context.MODE_PRIVATE));
-
-            DOMSource source = new DOMSource(document);
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            StreamResult result = new StreamResult(fout);
-            transformer.transform(source, result);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Toast.makeText(ChatActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(ChatActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     // Lee los mensajes almacenados y los agrega al ListView
     private void leerMensajesAlmacenados() {
@@ -249,7 +181,7 @@ public class ChatActivity extends Activity {
             }
 
         } else {
-             //Obtenemos la referencia al fichero XML de entrada
+            //Obtenemos la referencia al fichero XML de entrada
             FileInputStream fil = null;
             try {
                 fil = openFileInput(emailDestino + ".xml");
@@ -298,6 +230,17 @@ public class ChatActivity extends Activity {
             }
         }
 
+    }
+
+    private void addMessageToListView(String username, String msg) {
+        MensajeChatModel newMsg = new MensajeChatModel();
+        newMsg.setMsg(msg);
+        newMsg.setNickname(username);
+
+        listaMensajes.add(newMsg);
+        adapter.notifyDataSetChanged();
+
+        listViewMensajes.setSelection(adapter.getCount()-1);
     }
 
 
