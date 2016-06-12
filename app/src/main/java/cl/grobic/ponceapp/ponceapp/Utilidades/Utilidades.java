@@ -1,8 +1,9 @@
 package cl.grobic.ponceapp.ponceapp.Utilidades;
 
 import android.content.Context;
-import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -13,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,6 +24,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import cl.grobic.ponceapp.ponceapp.Modelos.Usuario;
 
 /**
  * Created by Carlos on 11-06-2016.
@@ -155,5 +157,24 @@ public class Utilidades {
         String mesStr = mes < 10 ? "0" + mes : String.valueOf(mes);
 
         return diaStr + "/" + mesStr + "/" + String.valueOf(año);
+    }
+
+    public static JSONObject convertirUsuarioAJSON(Usuario usuario) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("id", usuario.getId());
+            json.put("nickname", usuario.getNickname());
+            json.put("subnick", usuario.getSubnick());
+            json.put("email", usuario.getEmail());
+            json.put("nickname_style", usuario.getNickname_style());
+            json.put("avatar", usuario.getAvatarPath());
+            json.put("state", usuario.getState());
+            json.put("msg_style", usuario.getMsg_style());
+
+            return json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

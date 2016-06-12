@@ -14,7 +14,16 @@ public class Usuario {
     private String nickname_style;
     private String msg_style;
     private Bitmap avatar;
+    private String avatarPath;
     private String state;
+
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
+    }
 
     public int getId() {
         return id;

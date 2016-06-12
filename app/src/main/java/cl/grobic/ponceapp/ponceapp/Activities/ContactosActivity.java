@@ -18,7 +18,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
-import com.squareup.okhttp.internal.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +76,7 @@ public class ContactosActivity extends AppCompatActivity
 
                 Intent intent = new Intent(ContactosActivity.this, ChatActivity.class);
                 intent.putExtra("user_info", getIntent().getStringExtra("user_info"));
-                intent.putExtra("user_destino", userDestino.getEmail());
+                intent.putExtra("user_destino", Utilidades.convertirUsuarioAJSON(userDestino).toString());
                 startActivity(intent);
             }
         });
@@ -118,6 +117,10 @@ public class ContactosActivity extends AppCompatActivity
                 contacto.setNickname(jsonContacto.get("nickname").toString());
                 contacto.setEmail(jsonContacto.get("email").toString());
                 contacto.setState(jsonContacto.get("state").toString());
+                contacto.setId((Integer) jsonContacto.get("id"));
+                contacto.setNickname_style(jsonContacto.get("nickname_style").toString());
+                contacto.setAvatarPath(jsonContacto.get("avatar").toString());
+                contacto.setMsg_style(jsonContacto.get("msg_style").toString());
 
                 if (!jsonContacto.isNull("subnick"))
                     contacto.setSubnick(jsonContacto.get("subnick").toString());

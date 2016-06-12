@@ -55,8 +55,9 @@ public class ChatActivity extends Activity {
     private ArrayList<MensajeChatModel> listaMensajes;
     private MessageAdapter adapter;
     private Conexion conexion;
-    private JSONObject user;
+    private JSONObject user, userDestino, nicknameStyleDestino, msgStyleDestino, nicknameStyleUser, msgStyleUser;
     private String emailDestino;
+    private int idContactoDestino;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +81,24 @@ public class ChatActivity extends Activity {
         listViewMensajes.setAdapter(adapter);
 
         try {
+            // Obteniendo la info del usuario logueado (user) y la info del contacto del chat (userDestino)
             user = new JSONObject(getIntent().getStringExtra("user_info"));
-            emailDestino = getIntent().getStringExtra("user_destino");
+            userDestino = new JSONObject(getIntent().getStringExtra("user_destino"));
+            emailDestino = userDestino.get("email").toString();
+
+            // Identificando estilos
+            if (user.getString("nickname_style") != "null")
+                nicknameStyleUser = new JSONObject(user.get("nickname_style").toString());
+
+            if (!user.get("msg_style").equals("null"))
+                msgStyleUser = new JSONObject(user.get("msg_style").toString());
+
+            if (!userDestino.get("nickname_style").equals("null"))
+                nicknameStyleDestino = new JSONObject(userDestino.get("nickname_style").toString());
+
+            if (!userDestino.get("msg_style").equals("null"))
+                msgStyleDestino = new JSONObject(userDestino.get("msg_style").toString());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -111,7 +128,7 @@ public class ChatActivity extends Activity {
             sentData.put("email", email);
             conexion.getSocket().emit("chat message", sentData);
 
-            addMessageToListView(nickname, message);
+            addMessageToListView(nickname, message, false);
             Utilidades.almacenarMensaje(this, emailDestino, nickname, message);
 
         } catch (JSONException e) {
@@ -140,7 +157,7 @@ public class ChatActivity extends Activity {
                         // aquel que corresponde a la misma persona, y no agregar un mensaje de un
                         // tercero a la conversa
                         if (emailIncommingMessage.equals(emailDestino)) {
-                            addMessageToListView(usernameIncommingMessage, msgIncommingMessage);
+                            addMessageToListView(usernameIncommingMessage, msgIncommingMessage, true);
                             mostrarTextoUltimoMensaje();
                         }
 
@@ -259,11 +276,12 @@ public class ChatActivity extends Activity {
 
                     // Se agrega el primer mensaje
                     if (i == 0)
-                        addMessageToListView(nickname, msg);
+                        addMessageToListView(nickname, msg, !nickname.equals(user.getString("nickname")));
+
 
                     // Si el mensaje no es igual al anterior se agrega al ListView
                     if (!nodoMensaje.isEqualNode(mensajeAnterior))
-                        addMessageToListView(nickname, msg);
+                        addMessageToListView(nickname, msg, !nickname.equals(user.getString("nickname")));
 
                     mensajeAnterior = hijos.item(i);
                 }
@@ -295,10 +313,45 @@ public class ChatActivity extends Activity {
 
     }
 
-    private void addMessageToListView(String username, String msg) {
+    private void addMessageToListView(String username, String msg, boolean enviaDestinatario) {
         MensajeChatModel newMsg = new MensajeChatModel();
         newMsg.setMsg(msg);
         newMsg.setNickname(username);
+
+        try {
+            // Seteando estilos del destinatario
+            if (enviaDestinatario) {
+                if (msgStyleDestino != null) {
+                    newMsg.setMsgBold(msgStyleDestino.getString("bold"));
+                    newMsg.setMsgItalic(msgStyleDestino.getString("italic"));
+                    newMsg.setMsgColor(msgStyleDestino.getString("color"));
+                }
+
+                if (nicknameStyleDestino != null) {
+                    newMsg.setNicknameBold(nicknameStyleDestino.getString("bold"));
+                    newMsg.setNicknameItalic(nicknameStyleDestino.getString("italic"));
+                    newMsg.setNicknameColor(nicknameStyleDestino.getString("color"));
+                }
+            }
+            // Seteando estilos del usuario
+            else {
+                if (msgStyleUser != null) {
+                    newMsg.setMsgBold(msgStyleUser.getString("bold"));
+                    newMsg.setMsgItalic(msgStyleUser.getString("italic"));
+                    newMsg.setMsgColor(msgStyleUser.getString("color"));
+                }
+
+                if (nicknameStyleUser != null) {
+                    newMsg.setNicknameBold(nicknameStyleUser.getString("bold"));
+                    newMsg.setNicknameItalic(nicknameStyleUser.getString("italic"));
+                    newMsg.setNicknameColor(nicknameStyleUser.getString("color"));
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         listaMensajes.add(newMsg);
         adapter.notifyDataSetChanged();
