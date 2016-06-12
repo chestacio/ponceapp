@@ -12,7 +12,7 @@ import java.io.InputStream;
  */
 public class ObtenerAvatar extends AsyncTask<String, Void, Bitmap> {
 
-    private String url = "http://192.168.0.100:3000";
+    private String url = "https://yeessenger.herokuapp.com";
 
     protected Bitmap doInBackground(String... urls) {
         String urldisplay = url + "/media/" + urls[0];

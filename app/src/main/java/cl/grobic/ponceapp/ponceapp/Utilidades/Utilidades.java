@@ -1,6 +1,7 @@
 package cl.grobic.ponceapp.ponceapp.Utilidades;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

@@ -34,7 +34,7 @@ import java.net.URL;
 // Tipos de datos                        <Entrada, Medio(?), Retorno>
 public class SendRequest extends AsyncTask<JSONObject, Void, String>{
 
-    private String url = "http://192.168.0.100:3000";
+    private String url = "https://yeessenger.herokuapp.com";
 
     private String api;
     private String method;
@@ -55,7 +55,7 @@ public class SendRequest extends AsyncTask<JSONObject, Void, String>{
             con.setRequestProperty("Accept", "application/json");
             con.setRequestMethod(method);
 
-            con.setConnectTimeout(3000);
+            con.setConnectTimeout(7000);
 
             // Si es del tipo POST o PUT se agregan los parametros
             if (!method.equals("GET")) {
