@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -92,6 +94,14 @@ public class Utilidades {
             elementoMensaje.appendChild(document.createTextNode(mensaje));
             nodoMensaje.appendChild(elementoMensaje);
 
+            Element elementoHora = document.createElement("hora");
+            elementoHora.appendChild(document.createTextNode(getTextoHora()));
+            nodoMensaje.appendChild(elementoHora);
+
+            Element elementoFecha = document.createElement("fecha");
+            elementoFecha.appendChild(document.createTextNode(getTextoFecha()));
+            nodoMensaje.appendChild(elementoFecha);
+
             //Creamos un fichero en memoria interna
             OutputStreamWriter fout = new OutputStreamWriter(
                     contexto.openFileOutput(emailDestino + ".xml", Context.MODE_PRIVATE));
@@ -118,5 +128,32 @@ public class Utilidades {
             e.printStackTrace();
         }
 
+    }
+
+    /* Retorna la hora en formato hh:mm */
+    public static String getTextoHora() {
+        Calendar horaActual = Calendar.getInstance();
+
+        int hora = horaActual.get(Calendar.HOUR);
+        int min = horaActual.get(Calendar.MINUTE);
+
+        String minStr = min < 10 ? "0" + min : String.valueOf(min);
+        String horaStr = hora < 10 ? "0" + hora : String.valueOf(hora);
+
+        return horaStr + ":" + minStr;
+    }
+
+    /* Retorna la fecha en formato dd/mm/aaaa */
+    public static String getTextoFecha() {
+        Calendar horaActual = Calendar.getInstance();
+
+        int dia = horaActual.get(Calendar.DAY_OF_MONTH);
+        int mes = horaActual.get(Calendar.MONTH) + 1;
+        int año = horaActual.get(Calendar.YEAR);
+
+        String diaStr = dia < 10 ? "0" + dia : String.valueOf(dia);
+        String mesStr = mes < 10 ? "0" + mes : String.valueOf(mes);
+
+        return diaStr + "/" + mesStr + "/" + String.valueOf(año);
     }
 }

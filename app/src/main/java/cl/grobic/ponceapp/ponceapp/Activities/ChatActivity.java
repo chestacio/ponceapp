@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
 
@@ -47,6 +48,8 @@ import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
 public class ChatActivity extends Activity {
 
     private Button botonEnviarMensaje;
+    private TextView textViewFechaUltimoMensaje, textViewHoraUltimoMensaje;
+    private TextView textViewUltimoMensajeRecibido, textViewEl;
     private EditText editTextIngresarMensaje;
     private ListView listViewMensajes;
     private ArrayList<MensajeChatModel> listaMensajes;
@@ -67,6 +70,10 @@ public class ChatActivity extends Activity {
         editTextIngresarMensaje = (EditText) findViewById(R.id.editTextIngresarMensaje);
         botonEnviarMensaje = (Button) findViewById(R.id.botonEnviarMensaje);
         listViewMensajes = (ListView) findViewById(R.id.listViewMensajesChat);
+        textViewUltimoMensajeRecibido = (TextView) findViewById(R.id.textViewUltimoMensajeRecibidoALas);
+        textViewHoraUltimoMensaje = (TextView) findViewById(R.id.textViewHoraUltimoMensaje);
+        textViewEl = (TextView) findViewById(R.id.textViewEl);
+        textViewFechaUltimoMensaje = (TextView) findViewById(R.id.textViewFechaUltimoMensaje);
 
         listaMensajes = new ArrayList<MensajeChatModel>();
         adapter = new MessageAdapter(this, listaMensajes);
@@ -132,8 +139,11 @@ public class ChatActivity extends Activity {
                         // al usuario logueado, entonces hay que filtrar y agregar al ListView solo
                         // aquel que corresponde a la misma persona, y no agregar un mensaje de un
                         // tercero a la conversa
-                        if (emailIncommingMessage.equals(emailDestino))
+                        if (emailIncommingMessage.equals(emailDestino)) {
                             addMessageToListView(usernameIncommingMessage, msgIncommingMessage);
+                            mostrarTextoUltimoMensaje();
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -142,12 +152,32 @@ public class ChatActivity extends Activity {
         }
     };
 
-    // Lee los mensajes almacenados y los agrega al ListView
+    /**
+     * Lee los mensajes almacenados y los agrega al ListView
+     * Estructura [correo_contacto].xml:
+     *
+     * <historial>
+     *
+     *     <nodoMensaje>
+     *         <nickname>chestacu</nickname>
+     *         <mensaje>holaaaa</mensaje>
+     *         <hora>02:27</hora>
+     *         <fecha>12/06/2016</fecha>
+     *     </nodoMensaje>
+     *
+     *     <nodoMensaje>
+     *         ...
+     *     </nodoMensaje>
+     *
+     * </historial>
+     */
     private void leerMensajesAlmacenados() {
         File file = this.getFileStreamPath(emailDestino + ".xml");
 
         // Si el archivo del historial no existe crea uno nuevo
         if (!file.exists()){
+            ocultarTextoUltimoMensaje();
+
             try {
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -181,6 +211,11 @@ public class ChatActivity extends Activity {
             }
 
         } else {
+            String nickname = "";
+            String msg = "";
+            String hora = null;
+            String fecha = null;
+
             //Obtenemos la referencia al fichero XML de entrada
             FileInputStream fil = null;
             try {
@@ -194,17 +229,33 @@ public class ChatActivity extends Activity {
                 // Elemento raiz ("Historial")
                 Element root = dom.getDocumentElement();
 
-                // Iteramos sobre los hijos ("nodoMensaje") y agregamos el mensaje al ListView
+                // Hijos ("nodoMensaje")
                 NodeList hijos = root.getChildNodes();
 
                 // Ya que al recibir mensajes los guarda repetidas veces en el .xml (NPI por qué)
                 // simplemente omito los mensajes repetidos que estén seguidos y agrego
                 // sólo aquellos que difieren con el anterior.
                 Node mensajeAnterior = hijos.item(0);
+
                 for (int i = 0; i < hijos.getLength(); i++) {
                     Node nodoMensaje = hijos.item(i);
-                    String nickname = nodoMensaje.getFirstChild().getTextContent();
-                    String msg = nodoMensaje.getLastChild().getTextContent();
+
+                    NodeList datosMensaje = nodoMensaje.getChildNodes();
+
+                    for (int j = 0; j < datosMensaje.getLength(); j++) {
+                        Node datoMensaje = datosMensaje.item(j);
+                        if (datoMensaje.getNodeName().equals("nickname"))
+                            nickname = datoMensaje.getTextContent();
+                        else if (datoMensaje.getNodeName().equals("mensaje"))
+                            msg = datoMensaje.getTextContent();
+
+                        // Obteniendo la fecha y hora del último mensaje del otro contacto
+                        else if (datoMensaje.getNodeName().equals("hora") && !nickname.equals(user.get("nickname").toString()))
+                            hora = datoMensaje.getTextContent();
+                        else if (datoMensaje.getNodeName().equals("fecha") && !nickname.equals(user.get("nickname").toString()))
+                            fecha = datoMensaje.getTextContent();
+
+                    }
 
                     // Se agrega el primer mensaje
                     if (i == 0)
@@ -219,6 +270,16 @@ public class ChatActivity extends Activity {
 
                 fil.close();
 
+                if (fecha != null && hora != null) {
+                    textViewFechaUltimoMensaje.setText(fecha);
+                    textViewHoraUltimoMensaje.setText(hora);
+                }
+                /* En caso de que no se tenga la última fecha ni hora
+                *  (i.e. no hay historial o no se tenga almacenado previamente) */
+                else
+                    ocultarTextoUltimoMensaje();
+
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (SAXException e) {
@@ -226,6 +287,8 @@ public class ChatActivity extends Activity {
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -241,6 +304,23 @@ public class ChatActivity extends Activity {
         adapter.notifyDataSetChanged();
 
         listViewMensajes.setSelection(adapter.getCount()-1);
+    }
+
+    private void ocultarTextoUltimoMensaje() {
+        textViewUltimoMensajeRecibido.setVisibility(View.GONE);
+        textViewHoraUltimoMensaje.setVisibility(View.GONE);
+        textViewEl.setVisibility(View.GONE);
+        textViewFechaUltimoMensaje.setVisibility(View.GONE);
+    }
+
+    private void mostrarTextoUltimoMensaje() {
+        textViewUltimoMensajeRecibido.setVisibility(View.VISIBLE);
+        textViewHoraUltimoMensaje.setVisibility(View.VISIBLE);
+        textViewEl.setVisibility(View.VISIBLE);
+        textViewFechaUltimoMensaje.setVisibility(View.VISIBLE);
+
+        textViewHoraUltimoMensaje.setText(Utilidades.getTextoHora());
+        textViewFechaUltimoMensaje.setText(Utilidades.getTextoFecha());
     }
 
 
