@@ -156,6 +156,7 @@ Respuesta:
         "subnick": null,
         "email": "eye@eye.cl",
         "nickname_style": null,
+        "msg_style": "{bold: true, italic: false, color: '#000000'}",
         "avatar": null,
         "state": "offline"
       },
@@ -165,6 +166,7 @@ Respuesta:
         "subnick": "CLST <3",
         "email": "indo@indo.cl",
         "nickname_style": null,
+        "msg_style": "{bold: false, italic: false, color: '#223344'}",
         "avatar": "duck.png",
         "state": "offline"
       }

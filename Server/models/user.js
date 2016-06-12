@@ -56,7 +56,7 @@ function User() {
 
 	this.getFriends = function(id, res) {
 		connection.acquire(function(err, con) {
-			query = 'SELECT u.id, u.nickname, u.subnick, u.email, u.nickname_style, u.avatar, e.state ';
+			query = 'SELECT u.id, u.nickname, u.subnick, u.email, u.nickname_style, u.msg_style, u.avatar, e.state ';
 			query += 'FROM friends AS a, users AS u, states AS e ';
 			query += 'WHERE ((a.user1=? AND a.user2=u.id) OR (a.user2=? AND a.user1=u.id)) AND u.state=e.id';
 			con.query(query, [id, id], function(err, response) {
