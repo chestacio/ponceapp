@@ -32,6 +32,8 @@ import cl.grobic.ponceapp.ponceapp.Modelos.Usuario;
  */
 public class Utilidades {
 
+    public static String URL_SERVER = "http://10.6.214.180:3000";
+
     // Guarda el mensaje recibido/enviado a la memoria interna
     // Nota: Al recibir mensajes los escribe repetidas veces en el archivo! NPI la razón
     public static void almacenarMensaje(Context contexto, String emailDestino, String nickname, String mensaje) {

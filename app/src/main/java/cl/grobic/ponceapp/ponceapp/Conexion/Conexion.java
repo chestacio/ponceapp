@@ -6,18 +6,18 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import java.net.URISyntaxException;
 
+import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
+
 /**
  * Created by Carlos on 23-04-2016.
  */
 public class Conexion {
 
-    private String url = "https://yeessenger.herokuapp.com";
-
     // Conexión al server
     private Socket socket;
     {
         try {
-            socket = IO.socket(url);
+            socket = IO.socket(Utilidades.URL_SERVER);
             socket.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();

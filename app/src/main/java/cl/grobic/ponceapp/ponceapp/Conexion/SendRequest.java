@@ -1,8 +1,6 @@
 package cl.grobic.ponceapp.ponceapp.Conexion;
 
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
@@ -15,6 +13,8 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+
+import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
 
 /**
  * Created by Carlos on 29-04-2016.
@@ -34,8 +34,6 @@ import java.net.URL;
 // Tipos de datos                        <Entrada, Medio(?), Retorno>
 public class SendRequest extends AsyncTask<JSONObject, Void, String>{
 
-    private String url = "https://yeessenger.herokuapp.com";
-
     private String api;
     private String method;
 
@@ -47,7 +45,7 @@ public class SendRequest extends AsyncTask<JSONObject, Void, String>{
     @Override
     protected String doInBackground(JSONObject... params) {
         try {
-            URL object = new URL(url + "/" + api);
+            URL object = new URL(Utilidades.URL_SERVER + "/" + api);
 
             HttpURLConnection con = (HttpURLConnection) object.openConnection();
 

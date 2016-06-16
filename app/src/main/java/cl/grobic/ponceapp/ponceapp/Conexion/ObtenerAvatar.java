@@ -7,15 +7,15 @@ import android.util.Log;
 
 import java.io.InputStream;
 
+import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
+
 /**
  * Created by Carlos on 30-04-2016.
  */
 public class ObtenerAvatar extends AsyncTask<String, Void, Bitmap> {
 
-    private String url = "https://yeessenger.herokuapp.com";
-
     protected Bitmap doInBackground(String... urls) {
-        String urldisplay = url + "/media/" + urls[0];
+        String urldisplay = Utilidades.URL_SERVER + "/media/" + urls[0];
         Bitmap mIcon11 = null;
         try {
             InputStream in = new java.net.URL(urldisplay).openStream();
