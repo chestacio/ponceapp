@@ -3,6 +3,8 @@ package cl.grobic.ponceapp.ponceapp.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 
@@ -45,7 +48,7 @@ import cl.grobic.ponceapp.ponceapp.R;
 import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
 
 
-public class ChatActivity extends Activity {
+public class ChatActivity extends AppCompatActivity {
 
     private Button botonEnviarMensaje;
     private TextView textViewFechaUltimoMensaje, textViewHoraUltimoMensaje;
@@ -63,6 +66,9 @@ public class ChatActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarChat);
+        setSupportActionBar(toolbar);
 
         // Escucha la conversa actual para agregar los mensajes al ListView
         conexion = new Conexion();
@@ -85,6 +91,8 @@ public class ChatActivity extends Activity {
             user = new JSONObject(getIntent().getStringExtra("user_info"));
             userDestino = new JSONObject(getIntent().getStringExtra("user_destino"));
             emailDestino = userDestino.get("email").toString();
+
+            toolbar.setTitle(userDestino.getString("nickname"));
 
             // Identificando estilos
             if (user.getString("nickname_style") != "null")
@@ -113,6 +121,10 @@ public class ChatActivity extends Activity {
         leerMensajesAlmacenados();
     }
 
+
+    /*
+    TODO: Agregar id al mensaje de envio para que el otro usuario lo pueda recibir, la idea es usar ese id para buscar el usuario en la bd y adjuntarlo a la notificacion.
+     */
     private void sendMessage() {
         String message = editTextIngresarMensaje.getText().toString();
         editTextIngresarMensaje.setText("");
@@ -123,9 +135,11 @@ public class ChatActivity extends Activity {
         try {
             String nickname = user.get("nickname").toString();
             String email  = user.get("email").toString();
+            String id = user.get("id").toString();
             sentData.put("msg", "/w " + emailDestino + " " + message);
             sentData.put("username", nickname);
             sentData.put("email", email);
+            sentData.put("id", id);
             conexion.getSocket().emit("chat message", sentData);
 
             addMessageToListView(nickname, message, false);

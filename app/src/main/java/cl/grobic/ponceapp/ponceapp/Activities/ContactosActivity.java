@@ -1,5 +1,8 @@
 package cl.grobic.ponceapp.ponceapp.Activities;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 
@@ -44,6 +49,7 @@ public class ContactosActivity extends AppCompatActivity
     private TextView textViewEmailSideMenu;
     private JSONObject user;
     private Conexion conexion;
+    private Usuario userDestino;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +78,7 @@ public class ContactosActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Usuario userDestino = (Usuario) listViewContactos.getItemAtPosition(position);
+                userDestino = (Usuario) listViewContactos.getItemAtPosition(position);
 
                 Intent intent = new Intent(ContactosActivity.this, ChatActivity.class);
                 intent.putExtra("user_info", getIntent().getStringExtra("user_info"));
@@ -143,6 +149,37 @@ public class ContactosActivity extends AppCompatActivity
 
             }
 
+            // Agregando a uno mismo para pruebas!!!!!
+            Usuario contacto = new Usuario();
+            contacto.setNickname(user.get("nickname").toString());
+            contacto.setEmail(user.get("email").toString());
+            contacto.setState(user.get("state").toString());
+            contacto.setId((Integer) user.get("id"));
+            contacto.setNickname_style(user.get("nickname_style").toString());
+            contacto.setAvatarPath(user.get("avatar").toString());
+            contacto.setMsg_style(user.get("msg_style").toString());
+
+            if (!user.isNull("subnick"))
+                contacto.setSubnick(user.get("subnick").toString());
+            else
+                contacto.setSubnick("");
+
+            // Se carga el avatar del server
+            if (!user.isNull("avatar")){
+                ObtenerAvatar obj = new ObtenerAvatar();
+                obj.execute(user.get("avatar").toString());
+                contacto.setAvatar(obj.get());
+            }
+            // En caso de que no tenga avatar se carga el por defecto desde Resources
+            else{
+                Bitmap avatarDefecto = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+                contacto.setAvatar(avatarDefecto);
+            }
+
+            listaContactos.add(contacto);
+            // HASTA ACA SE AGREGA AL MISMO USUARIO
+
+
             adapter.notifyDataSetChanged();
 
         } catch (JSONException e) {
@@ -167,6 +204,8 @@ public class ContactosActivity extends AppCompatActivity
                         String usernameIncommingMessage = data.getString("username").toString();
                         String msgIncommingMessage = data.getString("msg").toString();
 
+                        //displayNotification(emailIncommingMessage);
+
                         Utilidades.almacenarMensaje(ContactosActivity.this, emailIncommingMessage, usernameIncommingMessage, msgIncommingMessage);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -175,6 +214,30 @@ public class ContactosActivity extends AppCompatActivity
             });
         }
     };
+
+    protected void displayNotification(String emailDestino){
+        Intent i = new Intent(this, ChatActivity.class);
+        i.putExtra("user_info", getIntent().getStringExtra("user_info"));
+        i.putExtra("user_destino", Utilidades.convertirUsuarioAJSON(userDestino).toString());
+        i.putExtra("notificationID", 1);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
+        NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        CharSequence ticker ="Nuevo mensaje!";
+        CharSequence contentTitle = "D:";
+        CharSequence contentText = "Has recibido un nuevo mensaje!";
+        Notification noti = new NotificationCompat.Builder(this)
+                .setContentIntent(pendingIntent)
+                .setTicker(ticker)
+                .setContentTitle(contentTitle)
+                .setContentText(contentText)
+                .setSmallIcon(R.drawable.contacto_1)
+                .addAction(R.drawable.contacto_2, ticker, pendingIntent)
+                .setVibrate(new long[] {100, 250, 100, 500})
+                .build();
+        nm.notify(1, noti);
+    }
 
     @Override
     public void onBackPressed() {

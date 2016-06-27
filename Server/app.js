@@ -30,7 +30,7 @@ io.on('connection', function(socket){
 			var msg = msg.substr(spaceIndex + 1).trim();
 
 			if (to in users) {
-				data = { username: data.username, msg: msg, email: data.email };
+				data = { username: data.username, msg: msg, email: data.email, id: data.id };
 				users[to].emit('chat message', data);
 			}
 		}
