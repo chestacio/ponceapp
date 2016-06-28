@@ -32,4 +32,8 @@ public class Conexion {
         socket.on(tag, handle);
     }
 
+    public void desconectar() {
+        socket.disconnect();
+    }
+
 }

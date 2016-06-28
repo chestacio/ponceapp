@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="none">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/estado_invisible"
-            android:title="Invisible" />
-    </group>
-
-    <item android:title=" ">
+    <item android:id="@+id/perfil"
+    android:title="Perfil">
         <menu>
             <item
-                android:id="@+id/nav_manage"
+                android:id="@+id/nav_e_perfil"
+                android:icon="@drawable/estado_invisible"
+                android:title="Editar perfil" />
+            <item
+                android:id="@+id/nav_a_contacto"
+                android:icon="@drawable/estado_invisible"
+                android:title="Agregar contacto" />
+        </menu>
+
+
+    </item>
+
+
+    <item android:id="@+id/file"
+        android:title="Sesión">
+        <menu>
+            <item
+                android:id="@+id/nav_ajustes"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Ajustes" />
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_c_sesion"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Cerrar sesión" />
         </menu>
+
     </item>
+
+
+
+
 
 </menu>
