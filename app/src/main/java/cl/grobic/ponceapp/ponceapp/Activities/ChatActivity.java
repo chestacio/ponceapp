@@ -1,6 +1,5 @@
 package cl.grobic.ponceapp.ponceapp.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,14 +37,19 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import cl.grobic.ponceapp.ponceapp.R;
 import cl.grobic.ponceapp.ponceapp.Adapters.MessageAdapter;
 import cl.grobic.ponceapp.ponceapp.Conexion.Conexion;
 import cl.grobic.ponceapp.ponceapp.Modelos.MensajeChatModel;
-import cl.grobic.ponceapp.ponceapp.R;
 import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
 
 
+<<<<<<< Updated upstream
 public class ChatActivity extends Activity {
+=======
+
+public class ChatActivity extends AppCompatActivity {
+>>>>>>> Stashed changes
 
     private Button botonEnviarMensaje;
     private TextView textViewFechaUltimoMensaje, textViewHoraUltimoMensaje;
@@ -171,7 +175,7 @@ public class ChatActivity extends Activity {
 
     /**
      * Lee los mensajes almacenados y los agrega al ListView
-     * Estructura [correo_contacto].xml:
+     * Estructura [correo_contacto].preferences:
      *
      * <historial>
      *
@@ -189,7 +193,7 @@ public class ChatActivity extends Activity {
      * </historial>
      */
     private void leerMensajesAlmacenados() {
-        File file = this.getFileStreamPath(emailDestino + ".xml");
+        File file = this.getFileStreamPath(emailDestino + ".preferences");
 
         // Si el archivo del historial no existe crea uno nuevo
         if (!file.exists()){
@@ -204,14 +208,14 @@ public class ChatActivity extends Activity {
                 Element rootElement = doc.createElement("historial");
                 doc.appendChild(rootElement);
 
-                // Escribiendo el contenido a un archivo .xml
+                // Escribiendo el contenido a un archivo .preferences
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
 
                 //Creamos un fichero en memoria interna
                 OutputStreamWriter fout = new OutputStreamWriter(
-                        openFileOutput(emailDestino + ".xml", Context.MODE_PRIVATE));
+                        openFileOutput(emailDestino + ".preferences", Context.MODE_PRIVATE));
 
                 StreamResult result = new StreamResult(fout);
 
@@ -236,7 +240,7 @@ public class ChatActivity extends Activity {
             //Obtenemos la referencia al fichero XML de entrada
             FileInputStream fil = null;
             try {
-                fil = openFileInput(emailDestino + ".xml");
+                fil = openFileInput(emailDestino + ".preferences");
 
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -249,7 +253,7 @@ public class ChatActivity extends Activity {
                 // Hijos ("nodoMensaje")
                 NodeList hijos = root.getChildNodes();
 
-                // Ya que al recibir mensajes los guarda repetidas veces en el .xml (NPI por qué)
+                // Ya que al recibir mensajes los guarda repetidas veces en el .preferences (NPI por qué)
                 // simplemente omito los mensajes repetidos que estén seguidos y agrego
                 // sólo aquellos que difieren con el anterior.
                 Node mensajeAnterior = hijos.item(0);

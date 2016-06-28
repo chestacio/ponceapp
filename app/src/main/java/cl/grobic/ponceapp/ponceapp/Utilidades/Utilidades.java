@@ -32,13 +32,14 @@ import cl.grobic.ponceapp.ponceapp.Modelos.Usuario;
  */
 public class Utilidades {
 
-    public static String URL_SERVER = "http://10.6.214.180:3000";
+    //public static String URL_SERVER = "http://10.6.214.180:3000";
+    public static String URL_SERVER = "http://192.168.0.20:3000";
 
     // Guarda el mensaje recibido/enviado a la memoria interna
     // Nota: Al recibir mensajes los escribe repetidas veces en el archivo! NPI la razón
     public static void almacenarMensaje(Context contexto, String emailDestino, String nickname, String mensaje) {
 
-        File file = contexto.getFileStreamPath(emailDestino + ".xml");
+        File file = contexto.getFileStreamPath(emailDestino + ".preferences");
 
         // Si el archivo del historial no existe crea uno nuevo
         if (!file.exists()){
@@ -51,14 +52,14 @@ public class Utilidades {
                 Element rootElement = doc.createElement("historial");
                 doc.appendChild(rootElement);
 
-                // Escribiendo el contenido a un archivo .xml
+                // Escribiendo el contenido a un archivo .preferences
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
 
                 //Creamos un fichero en memoria interna
                 OutputStreamWriter fout = new OutputStreamWriter(
-                        contexto.openFileOutput(emailDestino + ".xml", Context.MODE_PRIVATE));
+                        contexto.openFileOutput(emailDestino + ".preferences", Context.MODE_PRIVATE));
 
                 StreamResult result = new StreamResult(fout);
 
@@ -77,9 +78,9 @@ public class Utilidades {
         }
 
         try {
-            // Lee el  archivo [email_destino].xml (en /data/data/cl.grobic.ponceapp.ponceapp/files/),
+            // Lee el  archivo [email_destino].preferences (en /data/data/cl.grobic.ponceapp.ponceapp/files/),
             // agrega un nuevo mensaje y vuelve a reescribir el archivo.
-            FileInputStream fil = contexto.openFileInput(emailDestino + ".xml");
+            FileInputStream fil = contexto.openFileInput(emailDestino + ".preferences");
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -108,7 +109,7 @@ public class Utilidades {
 
             //Creamos un fichero en memoria interna
             OutputStreamWriter fout = new OutputStreamWriter(
-                    contexto.openFileOutput(emailDestino + ".xml", Context.MODE_PRIVATE));
+                    contexto.openFileOutput(emailDestino + ".preferences", Context.MODE_PRIVATE));
 
             DOMSource source = new DOMSource(document);
 

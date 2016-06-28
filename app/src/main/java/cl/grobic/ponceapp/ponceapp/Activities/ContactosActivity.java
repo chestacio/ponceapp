@@ -197,7 +197,7 @@ public class ContactosActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify a parent activity in AndroidManifest.preferences.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -214,18 +214,24 @@ public class ContactosActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_manage) {
+        if (id == R.id.nav_e_perfil) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            return true;
+        } else if (id == R.id.nav_a_contacto) {
+            return true;
+        } else if(id == R.id.nav_ajustes){
+            Intent intent = new Intent(ContactosActivity.this, AjustesActivity.class);
+            startActivity(intent);
+            return true;
+        } else if(id == R.id.nav_c_sesion){
+            this.finish();
+            return true;
+        } else{
+            return super.onOptionsItemSelected(item);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
+        //return true;
     }
 }
