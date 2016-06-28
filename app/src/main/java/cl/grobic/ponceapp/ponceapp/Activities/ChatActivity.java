@@ -2,6 +2,7 @@ package cl.grobic.ponceapp.ponceapp.Activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -44,12 +45,9 @@ import cl.grobic.ponceapp.ponceapp.Modelos.MensajeChatModel;
 import cl.grobic.ponceapp.ponceapp.Utilidades.Utilidades;
 
 
-<<<<<<< Updated upstream
-public class ChatActivity extends Activity {
-=======
 
 public class ChatActivity extends AppCompatActivity {
->>>>>>> Stashed changes
+
 
     private Button botonEnviarMensaje;
     private TextView textViewFechaUltimoMensaje, textViewHoraUltimoMensaje;
