@@ -42,6 +42,7 @@ public class ContactosActivity extends AppCompatActivity
     private ContactosAdapter adapter;
     private TextView textViewNicknameSideMenu;
     private TextView textViewEmailSideMenu;
+    private TextView textViewStatusSideMenu;
     private JSONObject user;
     private Conexion conexion;
 
@@ -83,6 +84,8 @@ public class ContactosActivity extends AppCompatActivity
 
         textViewEmailSideMenu = (TextView) header.findViewById(R.id.textViewEmailSideMenu);
         textViewNicknameSideMenu = (TextView) header.findViewById(R.id.textViewNicknameSideMenu);
+        textViewStatusSideMenu = (TextView) header.findViewById(R.id.textViewStatusSideMuenu);
+
 
         try {
             // Obtiene la info del usuario
@@ -90,6 +93,7 @@ public class ContactosActivity extends AppCompatActivity
 
             textViewEmailSideMenu.setText(user.get("email").toString());
             textViewNicknameSideMenu.setText(user.get("nickname").toString());
+            textViewStatusSideMenu.setText(user.get("state").toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -224,6 +228,7 @@ public class ContactosActivity extends AppCompatActivity
             startActivity(intent);
             return true;
         } else if(id == R.id.nav_c_sesion){
+            conexion.desconectar();
             this.finish();
             return true;
         } else{
