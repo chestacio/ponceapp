@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             else{
                 conexion = new Conexion();
                 conexion.getSocket().emit("new user", jsonRespuesta.get("email").toString());
-
+                btnIniciarSesion.setEnabled(true);
                 Intent intent = new Intent(LoginActivity.this, ContactosActivity.class);
                 intent.putExtra("user_info", respuesta);
                 progressDialog.dismiss();
