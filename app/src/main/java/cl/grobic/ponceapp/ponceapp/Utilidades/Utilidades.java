@@ -33,7 +33,7 @@ import cl.grobic.ponceapp.ponceapp.Modelos.Usuario;
 public class Utilidades {
 
     //public static String URL_SERVER = "http://10.6.214.180:3000";
-    public static String URL_SERVER = "http://192.168.0.20:3000";
+    public static String URL_SERVER = "http://yeessenger.herokuapp.com";
 
     // Guarda el mensaje recibido/enviado a la memoria interna
     // Nota: Al recibir mensajes los escribe repetidas veces en el archivo! NPI la razón
