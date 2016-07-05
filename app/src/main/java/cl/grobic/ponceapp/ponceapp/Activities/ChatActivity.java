@@ -1,10 +1,13 @@
 package cl.grobic.ponceapp.ponceapp.Activities;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -38,6 +42,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import cl.grobic.ponceapp.ponceapp.Conexion.ObtenerAvatar;
 import cl.grobic.ponceapp.ponceapp.R;
 import cl.grobic.ponceapp.ponceapp.Adapters.MessageAdapter;
 import cl.grobic.ponceapp.ponceapp.Conexion.Conexion;
@@ -66,6 +71,16 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        //myToolbar.setLogo(R.drawable.default_avatar);
+
+        if(myToolbar!=null){
+            setSupportActionBar(myToolbar);
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+
         // Escucha la conversa actual para agregar los mensajes al ListView
         conexion = new Conexion();
         conexion.escuchar("chat message", handleIncomingMessages);
@@ -82,11 +97,25 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new MessageAdapter(this, listaMensajes);
         listViewMensajes.setAdapter(adapter);
 
+
         try {
             // Obteniendo la info del usuario logueado (user) y la info del contacto del chat (userDestino)
             user = new JSONObject(getIntent().getStringExtra("user_info"));
             userDestino = new JSONObject(getIntent().getStringExtra("user_destino"));
             emailDestino = userDestino.get("email").toString();
+
+            //Menu
+            if (userDestino.getString("nickname") != "null")
+                getSupportActionBar().setTitle(userDestino.getString("nickname").toString());
+
+            if (userDestino.getString("subnick") != "null")
+                getSupportActionBar().setSubtitle(userDestino.getString("subnick").toString());
+
+            if (!userDestino.isNull("avatar")){
+                ObtenerAvatar obj = new ObtenerAvatar();
+                obj.execute(userDestino.get("avatar").toString());
+                //getSupportActionBar().setLogo());
+            }
 
             // Identificando estilos
             if (user.getString("nickname_style") != "null")
@@ -135,6 +164,19 @@ public class ChatActivity extends AppCompatActivity {
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
