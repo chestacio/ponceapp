@@ -31,8 +31,9 @@
         <activity
             android:name=".Activities.AjustesActivity"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".Activities.RegistroActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Activities.RegistroActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
