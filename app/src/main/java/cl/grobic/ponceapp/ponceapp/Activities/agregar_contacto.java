@@ -15,6 +15,7 @@ import cl.grobic.ponceapp.ponceapp.R;
 public class agregar_contacto extends DialogFragment{
     private EditText mail;
 
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -31,6 +32,9 @@ public class agregar_contacto extends DialogFragment{
 
                         //Aqui se hace todo el agregado
                         mail = (EditText) agregar_contacto.this.getDialog().findViewById(R.id.agregar_mail);
+
+
+                        System.out.println("id: "+ getArguments().getString("id"));
 
 
                     }

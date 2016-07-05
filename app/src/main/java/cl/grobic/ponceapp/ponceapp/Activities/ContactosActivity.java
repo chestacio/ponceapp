@@ -60,15 +60,8 @@ public class ContactosActivity extends AppCompatActivity
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-                agregar_contacto fragment = new agregar_contacto();
-                fragment.show(ft,"Agregar Contacto Nuevo");
-            }
-        });
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -113,10 +106,32 @@ public class ContactosActivity extends AppCompatActivity
             textViewNicknameSideMenu.setText(user.get("nickname").toString());
             textViewStatusSideMenu.setText(user.get("state").toString());
 
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                Bundle b = new Bundle();
+                try {
+                    user = new JSONObject(getIntent().getStringExtra("user_info"));
+                    b.putString("id", user.get("id").toString() );
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                agregar_contacto fragment = new agregar_contacto();
+                fragment.setArguments(b);
+
+                fragment.show(ft,"Agregar Contacto Nuevo");
+            }
+        });
+
         obtenerContactos();
+
 
         // Escucha todas las conversas para almacenar los mensajes
         conexion = new Conexion();
