@@ -54,6 +54,21 @@ function User() {
 		});
 	};
 
+	this.addFriend = function(id, data, res) {
+		console.log(data);
+		connection.acquire(function(err, con) {
+			query = 'INSERT INTO friends (user1, user2) ';
+			query += 'SELECT id,? FROM users WHERE email = ?;'
+			con.query(query, [id, data.email], function(err, response) {
+				con.release();
+				if (err)
+					res.send({ status: 1, message: 'Error al ingresar usuario'});
+				else	
+					res.send({ status: 0, message: 'Amigo agregado con éxito'});	
+			});
+		});
+	};
+
 	this.getFriends = function(id, res) {
 		connection.acquire(function(err, con) {
 			query = 'SELECT u.id, u.nickname, u.subnick, u.email, u.nickname_style, u.msg_style, u.avatar, e.state ';

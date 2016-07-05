@@ -32,6 +32,7 @@ Para probar que el Server funciona basta con abrir la dirección ```http://local
 | [```/user/```](#post-user)                | POST   | Crea un nuevo usuario                              |
 | [```/user/:id/```](#get-userid)             | GET    | Información del usuario ```:id```                  |
 | [```/user/:id/friends/```](#put-useridfriends)     | GET    | Obtiene los amigos del usuario ```:id```           |
+| [```/user/:id/friends/```](#post-useridfriends)     | POST    | Agrega un amigo al usuario ```:id```           |
 | [```/user/:id/nickname/```](#put-useridnickname)    | PUT    | Modifica el nickname del usuario ```:id```         |
 | [```/user/:id/email/```](#put-useridemail)       | PUT    | Modifica el email del usuario ```:id```            |
 | [```/user/:id/password/```](#put-useridpassword)    | PUT    | Modifica la contraseña del usuario ```:id```       |
@@ -172,6 +173,23 @@ Respuesta:
       }
     ]
     
+### POST ```/user/[id]/friends```
+Ejemplo: ```http://dominio/user/1/friends/```
+
+Body:
+
+    {
+        "email": "xx_poncioh_xx@hotmail.com",
+    }
+    
+Respuesta:
+
+    {
+      "status": 0,
+      "message": "Amigo agregado con éxito"
+    }
+
+
 ### PUT ```/user/[id]/nickname```
 Ejemplo: ```http://dominio/user/1/nickname/```
 

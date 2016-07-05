@@ -23,6 +23,9 @@ module.exports = {
 		app.get('/user/:id/friends/', function(req, res) {
 			user.getFriends(req.params.id, res);
 		});
+		app.post('/user/:id/friends/', function(req, res) {
+			user.addFriend(req.params.id, req.body, res);
+		});
 	    app.put('/user/:id/nickname', function(req, res) {
 	    	user.updateNickname(req.params.id, req.body, res);
 	    });
