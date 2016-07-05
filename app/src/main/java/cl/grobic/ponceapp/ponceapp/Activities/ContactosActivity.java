@@ -254,9 +254,8 @@ public class ContactosActivity extends AppCompatActivity
         if (id == R.id.nav_e_perfil) {
 
             return true;
-        } else if (id == R.id.nav_a_contacto) {
-            return true;
-        } else if(id == R.id.nav_ajustes){
+        }
+        else if(id == R.id.nav_ajustes){
             Intent intent = new Intent(ContactosActivity.this, AjustesActivity.class);
             startActivity(intent);
             return true;

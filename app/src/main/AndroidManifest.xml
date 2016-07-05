@@ -30,7 +30,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.AjustesActivity"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".Activities.RegistroActivity"
             android:theme="@style/AppTheme.NoActionBar" />
