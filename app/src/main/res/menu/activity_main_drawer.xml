@@ -8,10 +8,6 @@
                 android:id="@+id/nav_e_perfil"
                 android:icon="@drawable/estado_invisible"
                 android:title="Editar perfil" />
-            <item
-                android:id="@+id/nav_a_contacto"
-                android:icon="@drawable/estado_invisible"
-                android:title="Agregar contacto" />
         </menu>
 
 
@@ -27,7 +23,7 @@
                 android:title="Ajustes" />
             <item
                 android:id="@+id/nav_c_sesion"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_power_settings_new_black_24dp"
                 android:title="Cerrar sesión" />
         </menu>
 

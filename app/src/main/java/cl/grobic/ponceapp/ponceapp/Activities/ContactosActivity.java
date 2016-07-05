@@ -186,6 +186,7 @@ public class ContactosActivity extends AppCompatActivity
 
             }
 
+            /**
             // Agregando a uno mismo para pruebas!!!!!
             Usuario contacto = new Usuario();
             contacto.setNickname(user.get("nickname").toString());
@@ -215,7 +216,7 @@ public class ContactosActivity extends AppCompatActivity
 
             listaContactos.add(contacto);
             // HASTA ACA SE AGREGA AL MISMO USUARIO
-
+            */
 
             adapter.notifyDataSetChanged();
 
@@ -317,9 +318,8 @@ public class ContactosActivity extends AppCompatActivity
         if (id == R.id.nav_e_perfil) {
 
             return true;
-        } else if (id == R.id.nav_a_contacto) {
-            return true;
-        } else if(id == R.id.nav_ajustes){
+        }
+        else if(id == R.id.nav_ajustes){
             Intent intent = new Intent(ContactosActivity.this, AjustesActivity.class);
             startActivity(intent);
             return true;

@@ -3,7 +3,7 @@
     <CheckBoxPreference
         android:key="pref_sync"
         android:title="sync"
-        android:summary="Sincroniza weás"
+        android:summary="Sincroniza cosas"
         android:defaultValue="true" />
     <ListPreference
         android:dependency="pref_sync"

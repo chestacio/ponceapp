@@ -9,7 +9,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
+
+import cl.grobic.ponceapp.ponceapp.Conexion.SendRequest;
 import cl.grobic.ponceapp.ponceapp.R;
 
 public class agregar_contacto extends DialogFragment{
@@ -32,9 +39,35 @@ public class agregar_contacto extends DialogFragment{
 
                         //Aqui se hace todo el agregado
                         mail = (EditText) agregar_contacto.this.getDialog().findViewById(R.id.agregar_mail);
-
-
                         System.out.println("id: "+ getArguments().getString("id"));
+
+                        // Poniendo los parámetros del body para el request del Login
+                        JSONObject json = new JSONObject();
+
+                        try {
+                            json.put("email", mail);
+                            SendRequest agregarContactoRequest = new SendRequest("user/" + getArguments().getString("id") + "/friends", "POST");
+                            agregarContactoRequest.execute(json);
+
+                            String respuesta = agregarContactoRequest.get();
+
+                            if (respuesta == null){
+                                Toast.makeText(getActivity(), "Error al conectar al Server", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            JSONObject jsonRespuesta = new JSONObject(respuesta);
+
+                            Toast.makeText(getActivity(), jsonRespuesta.get("message").toString(), Toast.LENGTH_SHORT).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
 
 
                     }
